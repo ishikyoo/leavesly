@@ -1,0 +1,48 @@
+{
+	"schemaVersion": 1,
+	"id": "leavesly",
+	"version": "1.0+1.21.1",
+	"name": "Leavesly",
+	"description": "All the leaves will slowly be covered with snow when the snowstorm comes",
+	"authors": [
+		"iShikyoo"
+	],
+	"contact": {
+		"homepage": "https://github.com/ishikyoo/leavesly/releases",
+		"sources": "https://github.com/ishikyoo/leavesly",
+		"issues": "https://github.com/ishikyoo/leavesly/issues"
+	},
+	"license": "LGPL-3.0-only",
+	"icon": "assets/leavesly/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.ishikyoo.leavesly.Leavesly"
+		],
+		"client": [
+			"net.ishikyoo.leavesly.LeaveslyClient"
+		]
+	},
+	"mixins": [
+		"leavesly.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.5",
+		"minecraft": [
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4",
+			"1.20.5",
+			"1.20.6",
+			"1.21",
+			"1.21.1"
+		],
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

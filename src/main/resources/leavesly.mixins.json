@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "net.ishikyoo.leavesly.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"BlockInvoker",
+		"LeavesBlockMixin",
+		"VineBlockMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

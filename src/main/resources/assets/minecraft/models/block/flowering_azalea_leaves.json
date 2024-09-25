@@ -1,0 +1,7 @@
+{
+  "parent": "leavesly:block/leaves_addon",
+  "textures": {
+    "leaves": "leavesly:block/flowering_azalea_leaves",
+    "addon": "leavesly:block/flowering_azalea_leaves_flowers"
+  }
+}

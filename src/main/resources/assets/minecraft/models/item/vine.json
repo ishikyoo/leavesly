@@ -1,0 +1,6 @@
+{
+  "parent": "leavesly:item/vine",
+  "textures": {
+    "vine": "leavesly:item/vine"
+  }
+}

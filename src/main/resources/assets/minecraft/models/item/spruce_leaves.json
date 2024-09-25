@@ -1,0 +1,6 @@
+{
+  "parent": "leavesly:item/leaves",
+  "textures": {
+    "item": "leavesly:item/spruce_leaves"
+  }
+}
