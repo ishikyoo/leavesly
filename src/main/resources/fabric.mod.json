@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "leavesly",
-	"version": "1.0.1+1.21.1",
+	"version": "1.0.2+1.21.1",
 	"name": "Leavesly",
 	"description": "All the leaves will slowly be covered with snow when the snowstorm comes",
 	"authors": [
@@ -27,7 +27,7 @@
 		"leavesly.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.16.5",
+		"fabricloader": "*",
 		"minecraft": [
 			"1.19.4",
 			"1.20",

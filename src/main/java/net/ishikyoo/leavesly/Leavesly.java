@@ -24,7 +24,7 @@ public class Leavesly implements ModInitializer {
     static final int SKYLIGHT_MAX = 15;
     static final int SKYLIGHT_CUTOFF = 9;
     static final int SKYLIGHT_RANGE = SKYLIGHT_MAX - SKYLIGHT_CUTOFF;
-    static final int SNOW_MAX_VALUE = 8 * SKYLIGHT_RANGE;
+    static final int SNOW_MAX_VALUE = 8 * SKYLIGHT_RANGE - 1;
     static final int SNOW_VALUE_TO_CHANGE = (SNOW_MAX_VALUE + 1) / 2;
     static final double NEIGHBOURS_INFLUENCE = 0.875;
     static final double MAIN_INFLUENCE = Math.abs(NEIGHBOURS_INFLUENCE - 1);

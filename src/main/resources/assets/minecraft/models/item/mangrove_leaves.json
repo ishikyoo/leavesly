@@ -1,5 +1,5 @@
 {
-  "parent": "leavesly:item/leaves",
+  "parent": "leavesly:item/block",
   "textures": {
     "item": "leavesly:item/mangrove_leaves"
   }

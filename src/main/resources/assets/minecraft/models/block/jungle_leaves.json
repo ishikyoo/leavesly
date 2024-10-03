@@ -1,7 +1,7 @@
 {
-  "parent": "leavesly:block/leaves_addon",
+  "parent": "leavesly:block/block_addon",
   "textures": {
-    "leaves": "leavesly:block/jungle_leaves",
+    "block": "leavesly:block/jungle_leaves",
     "addon": "leavesly:block/jungle_leaves_fruits"
   }
 }

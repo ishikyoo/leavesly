@@ -1,6 +1,6 @@
 {
-  "parent": "leavesly:block/leaves",
+  "parent": "leavesly:block/block",
   "textures": {
-    "leaves": "leavesly:block/acacia_leaves"
+    "block": "leavesly:block/acacia_leaves"
   }
 }
