@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
 	"id": "leavesly",
-	"version": "1.0.2+1.21.1",
+	"version": "${version}",
 	"name": "Leavesly",
-	"description": "All the leaves will slowly be covered with snow when the snowstorm comes",
+	"description": "All the leaves will slowly be covered with snow when the snowstorm comes.",
 	"authors": [
 		"iShikyoo"
 	],
@@ -17,10 +17,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.ishikyoo.leavesly.Leavesly"
+			"com.ishikyoo.leavesly.Leavesly"
 		],
 		"client": [
-			"net.ishikyoo.leavesly.LeaveslyClient"
+			"com.ishikyoo.leavesly.LeaveslyClient"
 		]
 	},
 	"mixins": [

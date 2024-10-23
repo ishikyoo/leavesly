@@ -2,25 +2,25 @@
 {
   "schema_version": 1,
   "quilt_loader": {
-    "group": "io.github.ishikyoo",
+    "group": "com.ishikyoo",
     "id": "leavesly",
-    "version": "1.0.2+1.21.1",
+    "version": "${version}",
     "entrypoints": {
-      "main": "net.ishikyoo.leavesly.Leavesly",
-      "client": "net.ishikyoo.leavesly.LeaveslyClient"
+      "main": "com.ishikyoo.leavesly.Leavesly",
+      "client": "com.ishikyoo.leavesly.LeaveslyClient"
     },
     "depends": [
       "fabricloader",
       "fabric-api",
       {
         "id": "minecraft",
-        "versions": { "all": [">=1.19.4", "<1.21.1"] }
+        "versions": { "all": [">=1.19.4", "<=1.21.1"] }
       }
     ],
     "intermediate_mappings": "net.fabricmc:intermediary",
     "metadata": {
       "name": "Leavesly",
-      "description": "All the leaves will slowly be covered with snow when the snowstorm comes",
+      "description": "All the leaves will slowly be covered with snow when the snowstorm comes.",
       "contributors": {
         "iShikyoo": "Owner"
       },

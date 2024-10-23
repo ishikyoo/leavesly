@@ -1,0 +1,6 @@
+{
+  "parent": "leavesly:item/fern",
+  "textures": {
+    "item": "leavesly:item/fern"
+  }
+}

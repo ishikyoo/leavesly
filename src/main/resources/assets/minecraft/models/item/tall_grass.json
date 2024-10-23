@@ -1,0 +1,6 @@
+{
+  "parent": "leavesly:item/tall_grass",
+  "textures": {
+    "item": "leavesly:item/tall_grass"
+  }
+}

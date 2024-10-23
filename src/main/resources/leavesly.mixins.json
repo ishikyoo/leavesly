@@ -1,11 +1,17 @@
 {
 	"required": true,
-	"package": "net.ishikyoo.leavesly.mixin",
+	"package": "com.ishikyoo.leavesly.mixin.entry",
 	"compatibilityLevel": "JAVA_17",
+	"plugin": "com.ishikyoo.leavesly.mixin.MixinPlugin",
 	"mixins": [
-		"BlockInvoker",
-		"LeavesBlockMixin",
-		"VineBlockMixin"
+		"minecraft.common.block.LeavesBlockMixin",
+		"minecraft.common.block.MangroveLeavesBlockMixin",
+		"minecraft.common.block.ShortPlantBlockMixin",
+		"minecraft.common.block.TallPlantBlockMixin",
+		"minecraft.common.block.VineBlockMixin",
+		"minecraft.common.util.BlocksMixin",
+		"minecraft.twenty.common.block.CherryLeavesBlockMixin",
+      "minecraft.twentyone.common.block.CherryLeavesBlockMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
