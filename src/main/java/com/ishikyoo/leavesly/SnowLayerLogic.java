@@ -31,7 +31,7 @@ public class SnowLayerLogic {
     }
 
     public static void randomDoubleBlockTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if (world.getBiome(pos).value().getPrecipitation(pos) == Biome.Precipitation.SNOW) {
+        if (world.getBiome(pos).value().getPrecipitation(pos, world.getSeaLevel()) == Biome.Precipitation.SNOW) {
             int skyLight = world.getLightLevel(LightType.SKY, pos);
 
             if (skyLight > SKYLIGHT_CUTOFF_VALUE) {
@@ -71,43 +71,43 @@ public class SnowLayerLogic {
     }
 
     public static void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-            if (world.getBiome(pos).value().getPrecipitation(pos) == Biome.Precipitation.SNOW) {
-                int skyLight = world.getLightLevel(LightType.SKY, pos);
+        if (world.getBiome(pos).value().getPrecipitation(pos, world.getSeaLevel()) == Biome.Precipitation.SNOW) {
+            int skyLight = world.getLightLevel(LightType.SKY, pos);
 
-                if (skyLight > SKYLIGHT_CUTOFF_VALUE) {
-                    int blockSnow = state.get(SNOW_LAYER);
-                    double skyLightN = (double) (skyLight - SKYLIGHT_CUTOFF_VALUE) / (SKYLIGHT_MAX_VALUE - SKYLIGHT_CUTOFF_VALUE);
-                    double neighboursInfluenceN = getNeighboursInfluence(world, pos, NEIGHBOURS_INFLUENCE_RANGE);
-                    double maxSnowPerSkyLight = skyLightN * SNOW_LAYER_MAX_VALUE;
-                    double mainInfluenceN = skyLightN * MAIN_INFLUENCE;
-                    double mainInfluenceValue = mainInfluenceN * SNOW_LAYER_VALUE_TO_CHANGE;
+            if (skyLight > SKYLIGHT_CUTOFF_VALUE) {
+                int blockSnow = state.get(SNOW_LAYER);
+                double skyLightN = (double) (skyLight - SKYLIGHT_CUTOFF_VALUE) / (SKYLIGHT_MAX_VALUE - SKYLIGHT_CUTOFF_VALUE);
+                double neighboursInfluenceN = getNeighboursInfluence(world, pos, NEIGHBOURS_INFLUENCE_RANGE);
+                double maxSnowPerSkyLight = skyLightN * SNOW_LAYER_MAX_VALUE;
+                double mainInfluenceN = skyLightN * MAIN_INFLUENCE;
+                double mainInfluenceValue = mainInfluenceN * SNOW_LAYER_VALUE_TO_CHANGE;
 
-                    if (world.isRaining()) {
-                        double neighboursInfluenceAddN = (neighboursInfluenceN * skyLightN) * NEIGHBOURS_INFLUENCE;
-                        double neighboursInfluenceValueAdd = neighboursInfluenceAddN * SNOW_LAYER_VALUE_TO_CHANGE;
+                if (world.isRaining()) {
+                    double neighboursInfluenceAddN = (neighboursInfluenceN * skyLightN) * NEIGHBOURS_INFLUENCE;
+                    double neighboursInfluenceValueAdd = neighboursInfluenceAddN * SNOW_LAYER_VALUE_TO_CHANGE;
 
-                        int valueToAdd = (int) Math.floor(mainInfluenceValue + neighboursInfluenceValueAdd);
-                        if (valueToAdd == 0) valueToAdd = 1;
+                    int valueToAdd = (int) Math.floor(mainInfluenceValue + neighboursInfluenceValueAdd);
+                    if (valueToAdd == 0) valueToAdd = 1;
 
-                        if (blockSnow < maxSnowPerSkyLight && blockSnow <= SNOW_LAYER_MAX_VALUE - valueToAdd) {
-                            setBlockState(world, pos, state, blockSnow + valueToAdd);
-                        } else {
-                            setBlockState(world, pos, state, (int) maxSnowPerSkyLight);
-                        }
+                    if (blockSnow < maxSnowPerSkyLight && blockSnow <= SNOW_LAYER_MAX_VALUE - valueToAdd) {
+                        setBlockState(world, pos, state, blockSnow + valueToAdd);
                     } else {
-                        double neighboursInfluenceSubN = (Math.abs(neighboursInfluenceN - 1) * skyLightN) * NEIGHBOURS_INFLUENCE;
-                        double neighboursInfluenceValueSub = neighboursInfluenceSubN * SNOW_LAYER_VALUE_TO_CHANGE;
-
-                        int valueToSub = (int) Math.floor(mainInfluenceValue + neighboursInfluenceValueSub);
-                        if (valueToSub == 0) valueToSub = 1;
-
-                        if (blockSnow > 0 && blockSnow >= valueToSub) {
-                            setBlockState(world, pos, state, blockSnow - valueToSub);
-                        } else
-                            setBlockState(world, pos, state, 0);
+                        setBlockState(world, pos, state, (int) maxSnowPerSkyLight);
                     }
+                } else {
+                    double neighboursInfluenceSubN = (Math.abs(neighboursInfluenceN - 1) * skyLightN) * NEIGHBOURS_INFLUENCE;
+                    double neighboursInfluenceValueSub = neighboursInfluenceSubN * SNOW_LAYER_VALUE_TO_CHANGE;
+
+                    int valueToSub = (int) Math.floor(mainInfluenceValue + neighboursInfluenceValueSub);
+                    if (valueToSub == 0) valueToSub = 1;
+
+                    if (blockSnow > 0 && blockSnow >= valueToSub) {
+                        setBlockState(world, pos, state, blockSnow - valueToSub);
+                    } else
+                        setBlockState(world, pos, state, 0);
                 }
             }
+        }
     }
 
     public static void setDefaultState(Block block, StateManager<Block, BlockState> stateManager) {

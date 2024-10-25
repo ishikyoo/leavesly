@@ -1,6 +1,0 @@
-{
-  "parent": "leavesly:block/cross",
-  "textures": {
-    "cross": "leavesly:block/short_grass"
-  }
-}

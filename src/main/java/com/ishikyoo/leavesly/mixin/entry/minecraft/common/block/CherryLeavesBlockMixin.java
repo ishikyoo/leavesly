@@ -1,4 +1,4 @@
-package com.ishikyoo.leavesly.mixin.entry.minecraft.twenty.common.block;
+package com.ishikyoo.leavesly.mixin.entry.minecraft.common.block;
 
 import net.minecraft.block.*;
 import org.spongepowered.asm.mixin.Mixin;

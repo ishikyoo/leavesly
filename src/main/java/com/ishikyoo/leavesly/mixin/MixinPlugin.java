@@ -20,8 +20,6 @@ public final class MixinPlugin implements IMixinConfigPlugin {
     static final String MINECRAFT_ID = "minecraft";
     static final String MINECRAFT_ALL_ID = "common";
     static final String MINECRAFT_21_ID = "twentyone";
-    static final String MINECRAFT_20_ID = "twenty";
-    static final String MINECRAFT_19_ID = "nineteen";
     static final String MIXIN_MODE_BLOCK_ID = "block";
 
     static final int MIXIN_MOD_SPLIT_INDEX = 5;
@@ -104,10 +102,6 @@ public final class MixinPlugin implements IMixinConfigPlugin {
         String mixinPatchId = mixinClassNameSplit[MIXIN_PATCH_SPLIT_INDEX];
         if (mixinMinorId.equals(MINECRAFT_ALL_ID))
             minor = -1;
-        else if (mixinMinorId.equals(MINECRAFT_19_ID))
-            minor = 19;
-        else if (mixinMinorId.equals(MINECRAFT_20_ID))
-            minor = 20;
         else if (mixinMinorId.equals(MINECRAFT_21_ID))
             minor = 21;
         if (mixinPatchId.equals(MINECRAFT_ALL_ID))

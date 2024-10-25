@@ -25,10 +25,10 @@ public class LeaveslyColorProvider {
     static final HashMap<Block, Integer> blockStaticColorsHashMap = new HashMap<>();
     static final HashMap<Block, Double> blockColorBrightnesssHashMap = new HashMap<>();
 
-    public static void register(String mod, String id, int brightness) {
+    public static void register(String mod, String id, int tint) {
         Block block = LeaveslyBlockRegistry.getBlock(mod, id);
         if (block != null) {
-            blockStaticColorsHashMap.put(block, brightness);
+            blockStaticColorsHashMap.put(block, tint);
             ColorProviderRegistry.BLOCK.register(LeaveslyColorProvider::getBlockSnowLayeredStaticColor, block);
             LOGGER.info("Registered color (Mod: {}, Id: {}, Tint: {}).", mod, id, "static");
         }
@@ -59,6 +59,7 @@ public class LeaveslyColorProvider {
         register("minecraft", "azalea_leaves", getBrightenedColor(0xC4FF4F, 0.5725490196));
         register("minecraft", "cherry_leaves", getBrightenedColor(0xDEFF4C, 0.6));
         register("minecraft", "flowering_azalea_leaves", getBrightenedColor(0xC4FF4F, 0.5725490196));
+        register("minecraft", "pale_oak_leaves", 0xA0A69C);
         register("minecraft", "dark_oak_leaves", TintMode.Foliage, 0.72549019607);
         register("minecraft", "jungle_leaves", TintMode.Foliage, 0.85490196078);
         register("minecraft", "oak_leaves", TintMode.Foliage, 0.73725490196);
