@@ -120,12 +120,12 @@ public class SnowLayerLogic {
     }
 
     public static void setDefaultState(Block block, StateManager<Block, BlockState> stateManager) {
-        if (isSnowLayerBlock(block))
+        if (LeaveslyBlockRegistry.isPreregisteredBlockClass(block))
             stateManager.getDefaultState().with(SNOW_LAYER, 0);
     }
 
     public static void appendProperties(Block block, StateManager.Builder<Block, BlockState> builder) {
-        if (isSnowLayerBlock(block))
+        if (LeaveslyBlockRegistry.isPreregisteredBlockClass(block))
             builder.add(SNOW_LAYER);
     }
 

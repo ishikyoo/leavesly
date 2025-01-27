@@ -31,21 +31,26 @@ public final class LeaveslyBlockRegistry {
         return id;
     }
 
+    public static boolean isPreregisteredBlockClass(Block block) {
+        return preregistrationblockClassNamesHashSet.contains(block.getClass().getName());
+    }
     public static boolean isRegisteredBlock(Block block) {
-        return blocksHashMap.containsValue(block) || preregistrationblockClassNamesHashSet.contains(block.getClass().getName());
+        return blocksHashMap.containsValue(block);
     }
     public static boolean isRegisteredBlock(Identifier id) {
         return blocksHashMap.containsKey(id);
     }
 
     public static void register(Identifier id, Block block) {
-        Identifier blockId =  getCompatibilityBlockId(id);
-        if (!blocksHashMap.containsKey(blockId)) {
-            blocksHashMap.put(blockId, block);
-            identifierHashMap.put(block, blockId);
-            LOGGER.info("Registered block (Mod: {}, Id: {}, Class: {}).", id.getNamespace(), id.getPath(), block.getClass().getSimpleName());
-        } else {
-            LOGGER.warn("Trying to register already registered block (Mod: {}, Id: {}, Class: {}).", id.getNamespace(), id.getPath(), block.getClass().getSimpleName());
+        if (!id.equals(Identifier.ofVanilla("pitcher_plant"))) {
+            Identifier blockId = getCompatibilityBlockId(id);
+            if (!blocksHashMap.containsKey(blockId)) {
+                blocksHashMap.put(blockId, block);
+                identifierHashMap.put(block, blockId);
+                LOGGER.info("Registered block (Mod: {}, Id: {}, Class: {}).", id.getNamespace(), id.getPath(), block.getClass().getSimpleName());
+            } else {
+                LOGGER.warn("Trying to register already registered block (Mod: {}, Id: {}, Class: {}).", id.getNamespace(), id.getPath(), block.getClass().getSimpleName());
+            }
         }
     }
 

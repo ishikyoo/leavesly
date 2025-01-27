@@ -17,7 +17,7 @@ public abstract class BlocksMixin {
     @Inject(at = @At("RETURN"), method = "register(Ljava/lang/String;Ljava/util/function/Function;Lnet/minecraft/block/AbstractBlock$Settings;)Lnet/minecraft/block/Block;")
     private static void injectRegister(String id, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, CallbackInfoReturnable<Block> cir) {
         Block block = cir.getReturnValue();
-        if (LeaveslyBlockRegistry.isRegisteredBlock(block))
+        if (LeaveslyBlockRegistry.isPreregisteredBlockClass(block))
             LeaveslyBlockRegistry.register(Identifier.ofVanilla(id), block);
     }
 }
