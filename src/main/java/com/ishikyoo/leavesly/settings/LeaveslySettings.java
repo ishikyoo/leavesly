@@ -125,6 +125,10 @@ public class LeaveslySettings {
                 Tint.of(ColorType.FOLIAGE, 0.73725490196),
                 SnowLayerData.of(true, 1, 0,1)
         ));
+        register(Identifier.of("minecraft", "acacia_leaves"), BlockData.of(
+                Tint.of(ColorType.FOLIAGE, 0.70980392156),
+                SnowLayerData.of(true, 1, 0,1)
+        ));
 
         register(Identifier.of("minecraft", "vine"), BlockData.of(
                 Tint.of(ColorType.FOLIAGE, 0.66666666666),

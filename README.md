@@ -17,7 +17,7 @@ You can install `Leavesly` by downloading it from the following:
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/leavesly?style=for-the-badge&logo=modrinth&color=00AD5B)](https://modrinth.com/mod/leavesly)
 [![CurseForge Downloads](https://img.shields.io/curseforge/dt/1109585?style=for-the-badge&logo=curseforge&color=F16436&)](https://www.curseforge.com/minecraft/mc-mods/leavesly)
 
-Simply place the mod file `leavesly-1.2.1+seabreak.jar` in your `.minecraft\mods` folder, and load Minecraft using [Fabric](https://fabricmc.net/use/installer) or [Quilt](https://quiltmc.org/en/install).
+Simply place the mod file `leavesly-1.2.2+seabreak.jar` in your `.minecraft\mods` folder, and load Minecraft using [Fabric](https://fabricmc.net/use/installer) or [Quilt](https://quiltmc.org/en/install).
 You will need Fabric API or Quilted Fabric API.
 
 You can also install it using [Prism Launcher](https://prismlauncher.org), or any other mod manager you like.
