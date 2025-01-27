@@ -1,4 +1,3 @@
-
 {
   "schema_version": 1,
   "quilt_loader": {
@@ -7,7 +6,8 @@
     "version": "${version}",
     "entrypoints": {
       "main": "com.ishikyoo.leavesly.Leavesly",
-      "client": "com.ishikyoo.leavesly.LeaveslyClient"
+      "client": "com.ishikyoo.leavesly.LeaveslyClient",
+      "preLaunch": "com.ishikyoo.leavesly.LeaveslyPreLaunch"
     },
     "depends": [
       "fabricloader",

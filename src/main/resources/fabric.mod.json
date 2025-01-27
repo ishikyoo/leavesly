@@ -21,6 +21,9 @@
 		],
 		"client": [
 			"com.ishikyoo.leavesly.LeaveslyClient"
+		],
+		"preLaunch": [
+			"com.ishikyoo.leavesly.LeaveslyPreLaunch"
 		]
 	},
 	"mixins": [

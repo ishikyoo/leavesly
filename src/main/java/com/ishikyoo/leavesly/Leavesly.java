@@ -1,5 +1,6 @@
 package com.ishikyoo.leavesly;
 
+import com.ishikyoo.leavesly.settings.LeaveslySettings;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.block.Block;
 import org.slf4j.Logger;
@@ -11,6 +12,6 @@ public class Leavesly implements ModInitializer {
 
     @Override
     public void onInitialize() {
-
+        LeaveslySettings.initialize();
     }
 }

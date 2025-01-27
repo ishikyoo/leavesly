@@ -4,6 +4,7 @@ import com.ishikyoo.leavesly.LeaveslyBlockRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,6 +18,6 @@ public abstract class BlocksMixin {
     private static void injectRegister(String id, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, CallbackInfoReturnable<Block> cir) {
         Block block = cir.getReturnValue();
         if (LeaveslyBlockRegistry.isRegisteredBlock(block))
-            LeaveslyBlockRegistry.register("minecraft", id, block);
+            LeaveslyBlockRegistry.register(Identifier.ofVanilla(id), block);
     }
 }
