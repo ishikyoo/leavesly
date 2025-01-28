@@ -11,7 +11,7 @@
 		"minecraft.common.block.VineBlockMixin",
 		"minecraft.common.util.BlocksMixin",
 		"minecraft.twenty.common.block.CherryLeavesBlockMixin",
-      "minecraft.twentyone.common.block.CherryLeavesBlockMixin"
+        "minecraft.twentyone.common.block.CherryLeavesBlockMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

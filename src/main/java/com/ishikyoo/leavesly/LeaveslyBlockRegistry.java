@@ -1,6 +1,7 @@
 package com.ishikyoo.leavesly;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,32 +12,45 @@ public final class LeaveslyBlockRegistry {
 
     static HashSet<String> preregistrationblockClassNamesHashSet = new HashSet<>();
     static final HashMap<String, String> blockIdsCompatibilityHashMap = new HashMap<>(Map.of(
-            "grass", "short_grass"
+            "minecraft:grass", "minecraft:short_grass"
     ));
 
     static HashMap<String, Block> blocksHashMap = new HashMap<>();
+    static HashMap<Block, String> identifierHashMap = new HashMap<>();
 
-    public static Block getBlock(String mod, String id) {
-        Block block = blocksHashMap.get(mod + ":" + id);
+    public static Block getBlock(String id) {
+        Block block = blocksHashMap.get(id);
         if (block == null)
-            LOGGER.warn("Trying to get unregistered block (Mod: {}, Id: {})", mod, id);
+            LOGGER.warn("Trying to get unregistered block (Id: {})", id);
         return block;
     }
+    public static String getBlock(Block block) {
+        String id = identifierHashMap.get(block);
+        if (id == null)
+            LOGGER.warn("Trying to get unregistered block (Id: {})", id);
+        return id;
+    }
 
+    public static boolean isPreregisteredBlockClass(Block block) {
+        return preregistrationblockClassNamesHashSet.contains(block.getClass().getName());
+    }
     public static boolean isRegisteredBlock(Block block) {
-        return blocksHashMap.containsValue(block) || preregistrationblockClassNamesHashSet.contains(block.getClass().getName());
+        return blocksHashMap.containsValue(block);
     }
-    public static boolean isRegisteredBlock(String mod, String id) {
-        return blocksHashMap.containsKey(mod + ":" + id);
+    public static boolean isRegisteredBlock(String id) {
+        return blocksHashMap.containsKey(id);
     }
 
-    public static void register(String mod, String id, Block block) {
-        String blockId =  mod + ":" + getCompatibilityBlockId(id);
-        if (!blocksHashMap.containsKey(blockId)) {
-            blocksHashMap.put(blockId, block);
-            LOGGER.info("Registered block (Mod: {}, Id: {}, Class: {}).", mod, id, block.getClass().getSimpleName());
-        } else {
-            LOGGER.warn("Trying to register already registered block (Mod: {}, Id: {}, Class: {}).", mod, id, block.getClass().getSimpleName());
+    public static void register(String id, Block block) {
+        if (!id.equals("minecraft:pitcher_plant")) {
+            String blockId = getCompatibilityBlockId(id);
+            if (!blocksHashMap.containsKey(blockId)) {
+                blocksHashMap.put(blockId, block);
+                identifierHashMap.put(block, blockId);
+                LOGGER.info("Registered block (Id: {}, Class: {}).", id, block.getClass().getSimpleName());
+            } else {
+                LOGGER.warn("Trying to register already registered block (Id: {}, Class: {}).", id, block.getClass().getSimpleName());
+            }
         }
     }
 

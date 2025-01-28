@@ -13,4 +13,3 @@ public class LeaveslyClient implements ClientModInitializer {
         LeaveslyColorProvider.initialize();
     }
 }
-

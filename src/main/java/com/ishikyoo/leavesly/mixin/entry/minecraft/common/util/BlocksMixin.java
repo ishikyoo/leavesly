@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class BlocksMixin {
     @Inject(at = @At("RETURN"), method = "register(Ljava/lang/String;Lnet/minecraft/block/Block;)Lnet/minecraft/block/Block;")
     private static void injectRegister(String id, Block block, CallbackInfoReturnable<Block> cir) {
-        if (LeaveslyBlockRegistry.isRegisteredBlock(block))
-            LeaveslyBlockRegistry.register("minecraft", id, block);
+        if (LeaveslyBlockRegistry.isPreregisteredBlockClass(block))
+            LeaveslyBlockRegistry.register("minecraft:" + id, block);
     }
 }
