@@ -1,5 +1,6 @@
 package com.ishikyoo.leavesly;
 
+import com.ishikyoo.leavesly.block.Blocks;
 import com.ishikyoo.leavesly.settings.*;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.block.Block;
@@ -26,19 +27,19 @@ public class LeaveslyColorProvider {
     static final ArrayList<Identifier> registeredBlockIds = new ArrayList<>();
 
     public static void register(Identifier id) {
-        Block block = LeaveslyBlockRegistry.getBlock(id);
+        Block block = Blocks.getBlock(id);
         if (block != null) {
             BlockData blockData = LeaveslySettings.getSettings().getBlock(id);
             Tint tint = blockData.getTint();
             if (!registeredBlockIds.contains(id)) {
                 ColorProviderRegistry.BLOCK.register(LeaveslyColorProvider::getSnowLayeredBlockColor, block);
-                LOGGER.info("Registered color (Mod: {}, Id: {}, Tint: {}).", id.getNamespace(), id.getPath(), tint.getColorType().toString().toLowerCase());
+                LOGGER.info("Registered color (Id: {}, Tint: {}).", id, tint.getColorType().toString().toLowerCase());
                 registeredBlockIds.add(id);
             } else {
-                LOGGER.error("Trying to register a already registered block color (Mod: {}, Id: {}, Tint: {}).", id.getNamespace(), id.getPath(), tint.getColorType().toString().toLowerCase());
+                LOGGER.error("Trying to register a already registered block color (Id: {}, Tint: {}).", id, tint.getColorType().toString().toLowerCase());
             }
         } else {
-            LOGGER.error("Trying to register a color for a unregistered block (Mod: {}, Id: {}).", id.getNamespace(), id.getPath());
+            LOGGER.error("Trying to register a color for a unregistered block (Id: {}).", id);
         }
     }
 
@@ -69,7 +70,7 @@ public class LeaveslyColorProvider {
 
     static int getBlockColor(BlockState state, BlockRenderView world, BlockPos position) {
         Block block = state.getBlock();
-        BlockData blockData = LeaveslySettings.getSettings().getBlock(LeaveslyBlockRegistry.getBlock(block));
+        BlockData blockData = LeaveslySettings.getSettings().getBlock(Blocks.getBlockId(block));
         Tint tint = blockData.getTint();
         switch (tint.getColorType()) {
             case ColorType.STATIC:

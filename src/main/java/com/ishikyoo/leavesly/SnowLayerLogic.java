@@ -1,5 +1,6 @@
 package com.ishikyoo.leavesly;
 
+import com.ishikyoo.leavesly.block.Blocks;
 import com.ishikyoo.leavesly.settings.SnowLayerData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -120,12 +121,12 @@ public class SnowLayerLogic {
     }
 
     public static void setDefaultState(Block block, StateManager<Block, BlockState> stateManager) {
-        if (LeaveslyBlockRegistry.isPreregisteredBlockClass(block))
+        if (Blocks.isSupportedVanillaBlock(Blocks.tempMixinBlockId))
             stateManager.getDefaultState().with(SNOW_LAYER, 0);
     }
 
     public static void appendProperties(Block block, StateManager.Builder<Block, BlockState> builder) {
-        if (LeaveslyBlockRegistry.isPreregisteredBlockClass(block))
+        if (Blocks.isSupportedVanillaBlock(Blocks.tempMixinBlockId))
             builder.add(SNOW_LAYER);
     }
 
@@ -204,7 +205,7 @@ public class SnowLayerLogic {
     }
 
     protected static boolean isSnowLayerBlock(Block block) {
-        return LeaveslyBlockRegistry.isRegisteredBlock(block);
+        return Blocks.isRegisteredBlock(block);
     }
 
     protected static void setBlockState(ServerWorld world, BlockPos pos, BlockState state, int value) {
@@ -222,7 +223,7 @@ public class SnowLayerLogic {
     }
 
     protected static double getBlockValueToChange(BlockState state) {
-        Identifier blockId = LeaveslyBlockRegistry.getBlock(state.getBlock());
+        Identifier blockId = Blocks.getBlockId(state.getBlock());
         return (LeaveslySettings.getSettings().getSnowLayer().getTransitionSpeed() * LeaveslySettings.getSettings().getBlock(blockId).getSnowLayer().getTransitionSpeed()) * SNOW_LAYER_MAX_VALUE;
     }
 }

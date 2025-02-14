@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.biome.FoliageColors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,15 +85,15 @@ public class LeaveslySettings {
 
     private static void registerBlockSettings() {
         register(Identifier.of("minecraft", "birch_leaves"), BlockData.of(
-                Tint.of(FoliageColors.getBirchColor() & 0x00FFFFFF, 0.72549019607),
+                Tint.of(-8345771 & 0x00FFFFFF, 0.72549019607),
                 SnowLayerData.of(true, 1, 0,1)
         ));
         register(Identifier.of("minecraft", "mangrove_leaves"), BlockData.of(
-                Tint.of(FoliageColors.getMangroveColor() & 0x00FFFFFF, 0.70980392156),
+                Tint.of(-7158200 & 0x00FFFFFF, 0.70980392156),
                 SnowLayerData.of(true, 1, 0,1)
         ));
         register(Identifier.of("minecraft", "spruce_leaves"), BlockData.of(
-                Tint.of(FoliageColors.getSpruceColor() & 0x00FFFFFF, 0.60392156862),
+                Tint.of(-10380959 & 0x00FFFFFF, 0.60392156862),
                 SnowLayerData.of(true, 1, 0,1)
         ));
         register(Identifier.of("minecraft", "azalea_leaves"), BlockData.of(
