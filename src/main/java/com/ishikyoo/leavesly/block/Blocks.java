@@ -1,8 +1,8 @@
 package com.ishikyoo.leavesly.block;
 
-import com.google.common.collect.Sets;
 import com.ishikyoo.leavesly.support.Deobfuscator;
 import net.minecraft.block.Block;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,62 +37,56 @@ public class Blocks {
             Identifier.of("minecraft:grass"), Identifier.of("minecraft:short_grass")
     ));
 
-    protected static final HashSet<String> blockClassNameHashSet = new HashSet<>();
     protected static final HashMap<Identifier, Block> blockHashMap = new HashMap<>();
     protected static final HashMap<Block, Identifier> blockIdHashMap = new HashMap<>();
 
     public static Block getBlock(Identifier id) {
-        Block block = blockHashMap.get(id);
+        Identifier compId = getCompBlockId(id);
+        Block block = blockHashMap.get(compId);
         if (block == null)
-            LOGGER.warn("Trying to get unregistered block (Id: {})", id);
+            LOGGER.error("Trying to get unregistered block (Id: {})!", compId);
         return block;
     }
 
     public static Identifier getBlockId(Block block) {
         Identifier id = blockIdHashMap.get(block);
-        if (id == null)
-            LOGGER.warn("Trying to get unregistered block (Id: {})", id);
+        Identifier mineId = getCompBlockId(Registries.BLOCK.getId(block));
+        if (id == null) {
+            LOGGER.error("Trying to get unregistered block identifier (Id: {})!", mineId);
+            return null;
+        } else {
+            if (!id.equals(mineId)) {
+                LOGGER.error("Mismatch between Leavesly and Minecraft block id (Leavesly: {}, Minecraft: {})!", id, mineId);
+                return null;
+            }
+        }
         return id;
     }
 
     public static void register(Identifier id, Block block) {
         if (id == null) {
-            LOGGER.error("Trying to register a block with a null identifier");
+            LOGGER.error("Trying to register a block with a null identifier!");
             return;
         }
         if (block == null) {
-            LOGGER.error("Trying to register a null block (Id: {}).", id);
+            LOGGER.error("Trying to register a null block (Id: {})!", id);
             return;
         }
         Identifier blockId = getCompBlockId(id);
-        if (!isRegisteredBlock(blockId)) {
+        if (!isRegisteredBlockId(blockId)) {
             String blockClassName = Deobfuscator.getClassName(block);
-            //registerBlockClassName(blockClassName);
             blockHashMap.put(blockId, block);
             blockIdHashMap.put(block, blockId);
             LOGGER.info("Registered block (Id: {}, Class: {}).", blockId, blockClassName);
         }
     }
 
-    public static void registerBlockClassName(String className) {
-        if (!isRegisteredBlockClassName(className)) {
-            blockClassNameHashSet.add(className);
-            LOGGER.info("Registered block class name (Class: {}).", className);
-        } else {
-            LOGGER.warn("Trying to register an already registered block class name (Class: {}).", className);
-        }
-    }
-
-    public static boolean isRegisteredBlock(Identifier id) {
-        return blockHashMap.containsKey(id);
+    public static boolean isRegisteredBlockId(Identifier id) {
+        return blockHashMap.containsKey(getCompBlockId(id));
     }
 
     public static boolean isRegisteredBlock(Block block) {
-        return blockHashMap.containsValue(block);
-    }
-
-    public static boolean isRegisteredBlockClassName(String className) {
-        return blockClassNameHashSet.contains(className);
+        return isRegisteredBlockId(Registries.BLOCK.getId(block));
     }
 
     public static boolean isSupportedVanillaBlock(Identifier id) {
