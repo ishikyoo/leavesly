@@ -2,9 +2,8 @@ package com.ishikyoo.leavesly.settings;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import com.ishikyoo.leavesly.LeaveslyBlockRegistry;
+import com.ishikyoo.leavesly.block.Blocks;
 import net.minecraft.block.Block;
-import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +48,7 @@ public class LeaveslySettingsData {
         return blockDataHashMap.get(id);
     }
     public BlockData getBlock(Block block) {
-        return blockDataHashMap.get(LeaveslyBlockRegistry.getBlock(block));
+        return blockDataHashMap.get(Blocks.getBlockId(block));
     }
     public HashMap<String, BlockData> getBlocks() {
         return blockDataHashMap;

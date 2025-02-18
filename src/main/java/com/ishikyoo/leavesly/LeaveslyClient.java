@@ -1,5 +1,6 @@
 package com.ishikyoo.leavesly;
 
+import com.ishikyoo.leavesly.block.Blocks;
 import net.fabricmc.api.ClientModInitializer;
 
 import org.slf4j.Logger;

@@ -5,13 +5,10 @@
 	"plugin": "com.ishikyoo.leavesly.mixin.MixinPlugin",
 	"mixins": [
 		"minecraft.common.block.LeavesBlockMixin",
-		"minecraft.common.block.MangroveLeavesBlockMixin",
 		"minecraft.common.block.ShortPlantBlockMixin",
 		"minecraft.common.block.TallPlantBlockMixin",
 		"minecraft.common.block.VineBlockMixin",
-		"minecraft.common.util.BlocksMixin",
-		"minecraft.twenty.common.block.CherryLeavesBlockMixin",
-        "minecraft.twentyone.common.block.CherryLeavesBlockMixin"
+		"minecraft.common.util.BlocksMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

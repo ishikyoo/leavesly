@@ -1,7 +1,6 @@
 package com.ishikyoo.leavesly.mixin;
 
-import com.ishikyoo.leavesly.LeaveslyBlockRegistry;
-import com.ishikyoo.leavesly.Version;
+import com.ishikyoo.leavesly.support.Version;
 import org.objectweb.asm.tree.ClassNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,9 +69,7 @@ public final class MixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-        if (getMixinModId(mixinClassName).equals(MINECRAFT_ID) && getMixinMode(mixinClassName).equals(MIXIN_MODE_BLOCK_ID)) {
-            LeaveslyBlockRegistry.preregister(MINECRAFT_ID, targetClassName);
-        }
+
     }
 
     static String getMixinMode(String mixinClassName) {

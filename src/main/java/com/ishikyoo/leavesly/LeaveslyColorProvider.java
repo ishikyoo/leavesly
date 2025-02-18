@@ -1,5 +1,6 @@
 package com.ishikyoo.leavesly;
 
+import com.ishikyoo.leavesly.block.Blocks;
 import com.ishikyoo.leavesly.settings.*;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.block.Block;
@@ -25,7 +26,7 @@ public class LeaveslyColorProvider {
     static final ArrayList<String> registeredBlockIds = new ArrayList<>();
 
     public static void register(String id) {
-        Block block = LeaveslyBlockRegistry.getBlock(id);
+        Block block = Blocks.getBlock(id);
         if (block != null) {
             BlockData blockData = LeaveslySettings.getSettings().getBlock(id);
             Tint tint = blockData.getTint();
@@ -68,7 +69,7 @@ public class LeaveslyColorProvider {
 
     static int getBlockColor(BlockState state, BlockRenderView world, BlockPos position) {
         Block block = state.getBlock();
-        BlockData blockData = LeaveslySettings.getSettings().getBlock(LeaveslyBlockRegistry.getBlock(block));
+        BlockData blockData = LeaveslySettings.getSettings().getBlock(Blocks.getBlockId(block));
         Tint tint = blockData.getTint();
         switch (tint.getColorType()) {
             case STATIC:

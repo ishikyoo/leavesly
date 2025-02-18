@@ -1,4 +1,4 @@
-package com.ishikyoo.leavesly;
+package com.ishikyoo.leavesly.support;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -32,6 +32,18 @@ public class Version {
     }
     public int getPatch() { return patch; }
 
+    public boolean equal(Version version) {
+        return (getMajor() + getMinor() + getPatch()) == (version.getMajor() + version.getMinor() + version.getPatch());
+    }
+
+    public boolean older(Version version) {
+        return (getMajor() + getMinor() + getPatch()) < (version.getMajor() + version.getMinor() + version.getPatch());
+    }
+
+    public boolean newer(Version version) {
+        return (getMajor() + getMinor() + getPatch()) > (version.getMajor() + version.getMinor() + version.getPatch());
+    }
+
     public static Version of(String id) {
         Optional<ModContainer> modContainerI = FabricLoader.getInstance().getModContainer("minecraft");
         if (modContainerI.isPresent()) {
@@ -46,7 +58,7 @@ public class Version {
                 patch = Integer.parseInt(versionSplit[2]);
             return new Version(major, minor, patch);
         } else {
-            LOGGER.error("Couldn't get the version of (MOD: {}).", id);
+            LOGGER.error("Couldn't get the version of (Mod: {})!", id);
         }
         return null;
     }
