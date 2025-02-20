@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 public class Blocks {
-    protected static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
+    private static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
 
     public static Identifier tempMixinBlockId;
 
-    protected static final HashSet<Identifier> supportedVanillaBlockIdHashSet = new HashSet<>(Arrays.asList(
+    private static final HashSet<Identifier> supportedVanillaBlockIdHashSet = new HashSet<>(Arrays.asList(
             Identifier.ofVanilla("oak_leaves"),
             Identifier.ofVanilla("spruce_leaves"),
             Identifier.ofVanilla("birch_leaves"),
@@ -33,12 +33,12 @@ public class Blocks {
             Identifier.ofVanilla("large_fern")
     ));
 
-    static final HashMap<Identifier, Identifier> compBlockIdHashMap = new HashMap<>(Map.of(
+    private static final HashMap<Identifier, Identifier> compBlockIdHashMap = new HashMap<>(Map.of(
             Identifier.of("minecraft:grass"), Identifier.of("minecraft:short_grass")
     ));
 
-    protected static final HashMap<Identifier, Block> blockHashMap = new HashMap<>();
-    protected static final HashMap<Block, Identifier> blockIdHashMap = new HashMap<>();
+    private static final HashMap<Identifier, Block> blockHashMap = new HashMap<>();
+    private static final HashMap<Block, Identifier> blockIdHashMap = new HashMap<>();
 
     public static Block getBlock(Identifier id) {
         Identifier compId = getCompBlockId(id);
@@ -50,22 +50,17 @@ public class Blocks {
 
     public static Identifier getBlockId(Block block) {
         Identifier id = blockIdHashMap.get(block);
-        Identifier mineId = getCompBlockId(Registries.BLOCK.getId(block));
         if (id == null) {
-            LOGGER.error("Trying to get unregistered block identifier (Id: {})!", mineId);
+            Identifier mineId = getCompBlockId(Registries.BLOCK.getId(block));
+            LOGGER.error("Trying to get unregistered block id (Id: {})!", mineId);
             return null;
-        } else {
-            if (!id.equals(mineId)) {
-                LOGGER.error("Mismatch between Leavesly and Minecraft block id (Leavesly: {}, Minecraft: {})!", id, mineId);
-                return null;
-            }
         }
         return id;
     }
 
     public static void register(Identifier id, Block block) {
         if (id == null) {
-            LOGGER.error("Trying to register a block with a null identifier!");
+            LOGGER.error("Trying to register a block with a null id!");
             return;
         }
         if (block == null) {
@@ -86,14 +81,14 @@ public class Blocks {
     }
 
     public static boolean isRegisteredBlock(Block block) {
-        return isRegisteredBlockId(Registries.BLOCK.getId(block));
+        return blockIdHashMap.containsKey(block);
     }
 
     public static boolean isSupportedVanillaBlock(Identifier id) {
         return supportedVanillaBlockIdHashSet.contains(id);
     }
 
-    protected static Identifier getCompBlockId(Identifier id) {
+    private static Identifier getCompBlockId(Identifier id) {
         Identifier cId = compBlockIdHashMap.get(id);
         if (cId != null)
             return cId;

@@ -9,11 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Deobfuscator {
-    protected static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
-    protected static final boolean DEV_ENV = FabricLoader.getInstance().isDevelopmentEnvironment();
-    protected static final Version MINE_VER = Version.of("minecraft");
+    private static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
+    private static final boolean DEV_ENV = FabricLoader.getInstance().isDevelopmentEnvironment();
+    private static final Version MINE_VER = Version.of("minecraft");
+    private static final Version MINE_COMP_VER = Version.of(1, 21, 3);
 
-    protected static final HashMap<String, String> obfuscatedClassNameHashMap = new HashMap<>(
+    private static final HashMap<String, String> obfuscatedClassNameHashMap = new HashMap<>(
             Map.ofEntries(
                     Map.entry("net.minecraft.class_2397", "net.minecraft.block.LeavesBlock"),
                     Map.entry("net.minecraft.class_2541", "net.minecraft.block.VineBlock"),
@@ -23,7 +24,7 @@ public class Deobfuscator {
                     Map.entry("net.minecraft.class_8167", "net.minecraft.block.ParticleLeavesBlock")
             ));
 
-    protected static final HashMap<String, String> compClassNameHashMap = new HashMap<>(
+    private static final HashMap<String, String> compClassNameHashMap = new HashMap<>(
             Map.ofEntries(
                     Map.entry("net.minecraft.block.ParticleLeavesBlock", "net.minecraft.block.CherryLeavesBlock")
             ));
@@ -33,28 +34,20 @@ public class Deobfuscator {
     }
 
     public static String getClassName(String className) {
-        String finalClassName;
-        if (!DEV_ENV)
-            finalClassName = deobfuscate(className);
-        else
-            finalClassName = className;
-        return getCompClassName(finalClassName);
+        return getCompClassName(!DEV_ENV ? deobfuscate(className) : className);
     }
 
-    protected static String deobfuscate(String className) {
+    private static String deobfuscate(String className) {
         String deobfuscatedClassName = obfuscatedClassNameHashMap.get(className);
         if (deobfuscatedClassName == null)
-            LOGGER.warn("Trying to deobfuscate a null class name (ClassName: {})", className);
+            LOGGER.error("Trying to deobfuscate a null class name!");
         return deobfuscatedClassName;
     }
 
-    protected static String getCompClassName(String className) {
-        if (MINE_VER.newer(Version.of(1, 21, 3)))
+    private static String getCompClassName(String className) {
+        if (MINE_VER.newerThan(MINE_COMP_VER))
             return className;
         String compClassName = compClassNameHashMap.get(className);
-        if (compClassName == null)
-            return className;
-        else
-            return compClassName;
+        return compClassName == null ? className : compClassName;
     }
 }

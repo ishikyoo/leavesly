@@ -2,7 +2,6 @@ package com.ishikyoo.leavesly;
 
 import com.ishikyoo.leavesly.settings.LeaveslySettings;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.block.Block;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

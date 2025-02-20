@@ -9,43 +9,58 @@ import org.slf4j.LoggerFactory;
 import java.util.Optional;
 
 public class Version {
-    private Version(int major, int minor, int patch) {
-        this.major = major;
-        this.minor = minor;
-        this.patch = patch;
+    private Version(int value) {
+        this.value = value;
     }
 
-    public static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
+    private static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
 
-    int major;
-    int minor;
-    int patch;
+    private final int value;
 
-    public String getString() {
-        return major + "." + minor + "." + patch;
+    public String toString() {
+        return getMajor() + "." + getMinor() + "." + getPatch();
     }
+
+    public int getValue() {
+        return value;
+    }
+
     public int getMajor() {
-        return major;
+        return (value & 0xFF0000) >> 16;
     }
+
     public int getMinor() {
-        return minor;
-    }
-    public int getPatch() { return patch; }
-
-    public boolean equal(Version version) {
-        return (getMajor() + getMinor() + getPatch()) == (version.getMajor() + version.getMinor() + version.getPatch());
+        return (value & 0xFF00) >> 8;
     }
 
-    public boolean older(Version version) {
-        return (getMajor() + getMinor() + getPatch()) < (version.getMajor() + version.getMinor() + version.getPatch());
+    public int getPatch() {
+        return value & 0xFF;
     }
 
-    public boolean newer(Version version) {
-        return (getMajor() + getMinor() + getPatch()) > (version.getMajor() + version.getMinor() + version.getPatch());
+    @Override
+    public boolean equals(Object object) {
+        if (object == null)
+            return false;
+        if (object.getClass() != this.getClass())
+            return false;
+        return value == ((Version) object).value;
     }
 
-    public static Version of(String id) {
-        Optional<ModContainer> modContainerI = FabricLoader.getInstance().getModContainer("minecraft");
+    @Override
+    public int hashCode() {
+        return value;
+    }
+
+    public boolean olderThan(Version version) {
+        return value < version.value;
+    }
+
+    public boolean newerThan(Version version) {
+        return value > version.value;
+    }
+
+    public static Version of(String modid) {
+        Optional<ModContainer> modContainerI = FabricLoader.getInstance().getModContainer(modid);
         if (modContainerI.isPresent()) {
             ModContainer modContainer = modContainerI.get();
             ModMetadata modMetadata = modContainer.getMetadata();
@@ -53,17 +68,23 @@ public class Version {
             String[] versionSplit = version.split("\\.");
             int major = Integer.parseInt(versionSplit[0]);
             int minor = Integer.parseInt(versionSplit[1]);
-            int patch = 0;
-            if (versionSplit.length >= 3)
-                patch = Integer.parseInt(versionSplit[2]);
-            return new Version(major, minor, patch);
+            int patch = versionSplit.length <= 2 ? 0 : Integer.parseInt(versionSplit[2]);
+            return new Version(getValue(major, minor, patch));
         } else {
-            LOGGER.error("Couldn't get the version of (Mod: {}).", id);
+            LOGGER.error("Couldn't get the version of (Mod: {}).", modid);
         }
         return null;
     }
 
     public static Version of(int major, int minor, int patch) {
-        return new Version(major, minor, patch);
+        return new Version(getValue(major, minor, patch));
+    }
+
+    public static Version of(int value) {
+        return new Version(value);
+    }
+
+    private static int getValue(int major, int minor, int patch) {
+        return major << 16 | minor << 8 | patch;
     }
 }
