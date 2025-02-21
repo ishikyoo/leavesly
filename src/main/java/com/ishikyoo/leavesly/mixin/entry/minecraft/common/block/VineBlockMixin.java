@@ -32,7 +32,7 @@ public abstract class VineBlockMixin extends Block {
 
     @Override
     protected boolean hasRandomTicks(BlockState state) {
-        return SnowLayerLogic.hasRandomTick(state);
+        return true;
     }
 
     @Inject(at = @At("HEAD"), method = "randomTick")

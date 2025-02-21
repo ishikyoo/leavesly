@@ -24,7 +24,7 @@ public abstract class TallPlantBlockMixin extends PlantBlock {
 
     @Override
     protected boolean hasRandomTicks(BlockState state) {
-        return SnowLayerLogic.hasRandomTick(state);
+        return true;
     }
 
     @Override

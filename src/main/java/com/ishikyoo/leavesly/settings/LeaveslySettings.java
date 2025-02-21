@@ -3,6 +3,7 @@ package com.ishikyoo.leavesly.settings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import com.ishikyoo.leavesly.support.Version;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.FoliageColors;
@@ -18,16 +19,16 @@ import java.nio.file.Path;
 import java.util.HashMap;
 
 public class LeaveslySettings {
-    public static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
+    private static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
 
-    static final Path FILE_PATH = Path.of(String.valueOf(FabricLoader.getInstance().getConfigDir()), "leavesly.json");
+    private static final Path FILE_PATH = Path.of(String.valueOf(FabricLoader.getInstance().getConfigDir()), "leavesly.json");
 
-    static final int VERSION = 1;
+    private static final int VERSION = 1;
 
-    static Gson gson;
+    private static Gson gson;
 
-    static LeaveslySettingsData defaultSettings;
-    static LeaveslySettingsData settings;
+    private static LeaveslySettingsData defaultSettings;
+    private static LeaveslySettingsData settings;
 
     public static Gson getGson() {
         return gson;
@@ -84,6 +85,8 @@ public class LeaveslySettings {
     }
 
     private static void registerBlockSettings() {
+        Version mineVer = Version.of("minecraft");
+
         register("minecraft:birch_leaves", BlockData.of(
                 Tint.of(FoliageColors.getBirchColor() & 0x00FFFFFF, 0.72549019607),
                 SnowLayerData.of(true, 1, 0,1)
@@ -100,14 +103,22 @@ public class LeaveslySettings {
                 Tint.of(0xC4FF4F, 0.5725490196),
                 SnowLayerData.of(true, 1, 0,1)
         ));
-        register("minecraft:cherry_leaves", BlockData.of(
-                Tint.of(0xDEFF4C, 0.6),
-                SnowLayerData.of(true, 1, 0,1)
-        ));
+        if (mineVer.newerThan(Version.of(1, 19, 4))) {
+            register("minecraft:cherry_leaves", BlockData.of(
+                    Tint.of(0xDEFF4C, 0.6),
+                    SnowLayerData.of(true, 1, 0, 1)
+            ));
+        }
         register("minecraft:flowering_azalea_leaves", BlockData.of(
                 Tint.of(0xC4FF4F, 0.5725490196),
                 SnowLayerData.of(true, 1, 0,1)
         ));
+        if (mineVer.newerThan(Version.of(1, 21, 1))) {
+            register("minecraft:pale_oak_leaves", BlockData.of(
+                    Tint.of(0xA0A69C),
+                    SnowLayerData.of(true, 1, 0, 1)
+            ));
+        }
         register("minecraft:dark_oak_leaves", BlockData.of(
                 Tint.of(ColorType.FOLIAGE, 0.72549019607),
                 SnowLayerData.of(true, 1, 0,1)

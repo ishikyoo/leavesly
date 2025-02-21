@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LeaveslyColorProvider {
-    public static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
+    private static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
 
-    static final IntProperty SNOW_LAYER = SnowLayerLogic.SNOW_LAYER;
-    static final ArrayList<String> registeredBlockIds = new ArrayList<>();
+    private static final IntProperty SNOW_LAYER = SnowLayerLogic.SNOW_LAYER;
+    private static final ArrayList<String> registeredBlockIds = new ArrayList<>();
 
     public static void register(String id) {
         Block block = Blocks.getBlock(id);
@@ -50,7 +50,7 @@ public class LeaveslyColorProvider {
         }
     }
 
-    static int getSnowLayeredBlockColor(BlockState state, BlockRenderView world, BlockPos position, int index) {
+    private static int getSnowLayeredBlockColor(BlockState state, BlockRenderView world, BlockPos position, int index) {
         int snowLayer = state.get(SNOW_LAYER);
         int blockColor = getBlockColor(state, world, position);
         LeaveslySettingsData settings = LeaveslySettings.getSettings();
@@ -67,7 +67,7 @@ public class LeaveslyColorProvider {
         return blockColor;
     }
 
-    static int getBlockColor(BlockState state, BlockRenderView world, BlockPos position) {
+    private static int getBlockColor(BlockState state, BlockRenderView world, BlockPos position) {
         Block block = state.getBlock();
         BlockData blockData = LeaveslySettings.getSettings().getBlock(Blocks.getBlockId(block));
         Tint tint = blockData.getTint();
@@ -93,7 +93,7 @@ public class LeaveslyColorProvider {
         }
     }
 
-    static int getSnowLayeredColor(int color, double mask) {
+    private static int getSnowLayeredColor(int color, double mask) {
         int r = (color >> 16 & 0xff);
         int g = (color >> 8 & 0xff);
         int b = (color & 0xff);
@@ -103,14 +103,14 @@ public class LeaveslyColorProvider {
         return r << 16 | g << 8 | b;
     }
 
-    static int getMultiplyColor(int color, int multiplier) {
+    private static int getMultiplyColor(int color, int multiplier) {
         int r = (color >> 16 & 0xff) * (multiplier >> 16 & 0xff) / 255;
         int g = (color >> 8 & 0xff) * (multiplier >> 8 & 0xff) / 255;
         int b = (color & 0xff) * (multiplier & 0xff) / 255;
         return r << 16 | g << 8 | b;
     }
 
-    static int getScreenColor(int color, int multiplier) {
+    private static int getScreenColor(int color, int multiplier) {
         int r = 1 - (1 - (color >> 16 & 0xff)) * (1 - (multiplier >> 16 & 0xff)) / 255;
         int g = 1 - (1 - (color >> 8 & 0xff)) * (1 - (multiplier >> 8 & 0xff)) / 255;
         int b = 1 - (1 - (color & 0xff)) * (1 - (multiplier & 0xff)) / 255;

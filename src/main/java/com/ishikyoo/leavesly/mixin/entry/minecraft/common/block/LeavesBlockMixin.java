@@ -30,7 +30,7 @@ public abstract class LeavesBlockMixin extends Block {
 
     @Inject(at = @At("RETURN"), method = "hasRandomTicks", cancellable = true)
     private void injectHasRandomTicks(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(cir.getReturnValue() | SnowLayerLogic.hasRandomTick(state));
+        cir.setReturnValue(true);
     }
 
     @Inject(at = @At("HEAD"), method = "randomTick")

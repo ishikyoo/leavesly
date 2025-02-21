@@ -56,22 +56,17 @@ public class Blocks {
 
     public static String getBlockId(Block block) {
         String id = blockIdHashMap.get(block);
-        String mineId = getCompBlockId(Registries.BLOCK.getId(block).toString());
         if (id == null) {
-            LOGGER.error("Trying to get unregistered block identifier (Id: {})!", mineId);
+            String mineId = getCompBlockId(Registries.BLOCK.getId(block).toString());
+            LOGGER.error("Trying to get unregistered block id (Id: {})!", mineId);
             return null;
-        } else {
-            if (!id.equals(mineId)) {
-                LOGGER.error("Mismatch between Leavesly and Minecraft block id (Leavesly: {}, Minecraft: {})!", id, mineId);
-                return null;
-            }
         }
         return id;
     }
 
     public static void register(String id, Block block) {
         if (id == null) {
-            LOGGER.error("Trying to register a block with a null identifier!");
+            LOGGER.error("Trying to register a block with a null id!");
             return;
         }
         if (block == null) {
@@ -92,7 +87,7 @@ public class Blocks {
     }
 
     public static boolean isRegisteredBlock(Block block) {
-        return isRegisteredBlockId(Registries.BLOCK.getId(block).toString());
+        return blockIdHashMap.containsKey(block);
     }
 
     public static boolean isSupportedVanillaBlockId(String id) {

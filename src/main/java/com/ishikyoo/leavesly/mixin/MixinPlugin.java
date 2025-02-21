@@ -12,33 +12,28 @@ import java.util.List;
 import java.util.Set;
 
 public final class MixinPlugin implements IMixinConfigPlugin {
-    public static final Logger LOGGER = LoggerFactory.getLogger("Leavesly/Mixin");
+    private static final Logger LOGGER = LoggerFactory.getLogger("Leavesly/Mixin");
 
-    Version mcVersion;
+    private static final String MINECRAFT_ID = "minecraft";
+    private static final String MINECRAFT_ALL_ID = "common";
+    private static final String MINECRAFT_21_ID = "twentyone";
+    private static final String MINECRAFT_20_ID = "twenty";
+    private static final String MINECRAFT_19_ID = "nineteen";
 
-    static final String MINECRAFT_ID = "minecraft";
-    static final String MINECRAFT_ALL_ID = "common";
-    static final String MINECRAFT_21_ID = "twentyone";
-    static final String MINECRAFT_20_ID = "twenty";
-    static final String MINECRAFT_19_ID = "nineteen";
-    static final String MIXIN_MODE_BLOCK_ID = "block";
+    private static final int MINECRAFT_ALL_VALUE = 255;
 
-    static final int MIXIN_MOD_SPLIT_INDEX = 5;
-    static final int MIXIN_MINOR_SPLIT_INDEX = 6;
-    static final int MIXIN_PATCH_SPLIT_INDEX = 7;
-    static final int MIXIN_MODE_SPLIT_INDEX = 7;
-
-    static HashSet<String> blockClassNamesHashSet = new HashSet<>();
+    private static final int MIXIN_MOD_SPLIT_INDEX = 5;
+    private static final int MIXIN_MINOR_SPLIT_INDEX = 6;
+    private static final int MIXIN_PATCH_SPLIT_INDEX = 7;
 
     @Override
     public void onLoad(String mixinPackage) {
-        mcVersion = Version.of(MINECRAFT_ID);
-        LOGGER.info("Loading mixin package.");
+
     }
 
     @Override
     public String getRefMapperConfig() {
-        return "";
+        return null;
     }
 
     @Override
@@ -72,19 +67,12 @@ public final class MixinPlugin implements IMixinConfigPlugin {
 
     }
 
-    static String getMixinMode(String mixinClassName) {
-        String[] mixinClassNameSplit = mixinClassName.split("\\.");
-        if (mixinClassNameSplit[MIXIN_MINOR_SPLIT_INDEX].equals(MINECRAFT_ALL_ID))
-            return mixinClassNameSplit[MIXIN_MODE_SPLIT_INDEX];
-        else return mixinClassNameSplit[MIXIN_MODE_SPLIT_INDEX + 1];
-    }
-
-    static boolean isMinecraftVersionMixin(Version mixin, Version minecraft) {
+    private static boolean isMinecraftVersionMixin(Version mixin, Version minecraft) {
         if (mixin.getMajor() == minecraft.getMajor()) {
-            if (mixin.getMinor() == -1)
+            if (mixin.getMinor() == MINECRAFT_ALL_VALUE)
                 return true;
             if (mixin.getMinor() == minecraft.getMinor()) {
-                if (mixin.getPatch() == -1)
+                if (mixin.getPatch() == MINECRAFT_ALL_VALUE)
                     return true;
                 else return mixin.getPatch() == minecraft.getPatch();
             }
@@ -92,7 +80,7 @@ public final class MixinPlugin implements IMixinConfigPlugin {
         return false;
     }
 
-    static Version getMinecraftMixinVersion(String mixinClassName) {
+    private static Version getMinecraftMixinVersion(String mixinClassName) {
         int major = 1;
         int minor = 0;
         int patch = 0;
@@ -100,15 +88,15 @@ public final class MixinPlugin implements IMixinConfigPlugin {
         String mixinMinorId = mixinClassNameSplit[MIXIN_MINOR_SPLIT_INDEX];
         String mixinPatchId = mixinClassNameSplit[MIXIN_PATCH_SPLIT_INDEX];
         if (mixinMinorId.equals(MINECRAFT_ALL_ID))
-            minor = -1;
-        else if (mixinMinorId.equals(MINECRAFT_19_ID))
-            minor = 19;
-        else if (mixinMinorId.equals(MINECRAFT_20_ID))
-            minor = 20;
+            minor = 255;
         else if (mixinMinorId.equals(MINECRAFT_21_ID))
             minor = 21;
+        else if (mixinMinorId.equals(MINECRAFT_20_ID))
+            minor = 20;
+        else if (mixinMinorId.equals(MINECRAFT_19_ID))
+            minor = 19;
         if (mixinPatchId.equals(MINECRAFT_ALL_ID))
-            patch = -1;
+            patch = 255;
         else if (mixinPatchId.equals("zero"))
             patch = 0;
         else if (mixinPatchId.equals("one"))
@@ -126,7 +114,7 @@ public final class MixinPlugin implements IMixinConfigPlugin {
         return Version.of(major, minor, patch);
     }
 
-    static String getMixinModId(String mixinClassName) {
+    private static String getMixinModId(String mixinClassName) {
         String[] split = mixinClassName.split("\\.");
         return split[MIXIN_MOD_SPLIT_INDEX];
     }
