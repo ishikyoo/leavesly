@@ -1,13 +1,17 @@
 package com.ishikyoo.leavesly.settings;
 
 import com.google.gson.*;
-
 import java.lang.reflect.Type;
 
 public class Tint {
     private Tint() {
 
     }
+
+    public static final Tint DEFAULT_FOLIAGE = Tint.of(0x48b518);
+    public static final Tint DEFAULT_GRASS = Tint.of(0x7cbd6b);
+    public static final Tint FOLIAGE = Tint.of(ColorType.FOLIAGE);
+    public static final Tint GRASS = Tint.of(ColorType.GRASS);
 
     private ColorType type;
     private ColorBlend blend;
@@ -31,7 +35,7 @@ public class Tint {
     public static Tint of(ColorType type, double brightness) {
         return switch (type) {
             case GRASS, FOLIAGE:
-                if (brightness < 1)
+                if (brightness <= 1)
                     yield of(type, ColorBlend.MULTIPLY, getBrightenedColor(0xffffff, brightness));
                 else
                     yield of(type, ColorBlend.SCREEN, getBrightenedColor(0xffffff, brightness - 1));

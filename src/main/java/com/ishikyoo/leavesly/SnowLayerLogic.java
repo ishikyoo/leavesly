@@ -1,7 +1,6 @@
 package com.ishikyoo.leavesly;
 
 import com.ishikyoo.leavesly.block.Blocks;
-import com.ishikyoo.leavesly.settings.SnowLayerData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.DoubleBlockHalf;
@@ -14,11 +13,10 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LightType;
 import net.minecraft.world.biome.Biome;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ishikyoo.leavesly.settings.LeaveslySettings;
 
 public class SnowLayerLogic {
-    private static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
+    private static final Logger LOG = Leavesly.LOGGER;
 
     protected static IntProperty SNOW_LAYER = IntProperty.of("snow_layer", 0, 63);
     private final static int SNOW_LAYER_MAX_VALUE = SNOW_LAYER.getValues().size() - 1;
@@ -32,7 +30,7 @@ public class SnowLayerLogic {
         if (isSnowLayerBlock(state)) {
             if (LeaveslySettings.getSettings().getSnowLayer().isEnabled() && LeaveslySettings.getSettings().getBlock(state.getBlock()).getSnowLayer().isEnabled()) {
 
-                if (world.getBiome(pos).value().getPrecipitation(pos, world.getSeaLevel()) == Biome.Precipitation.SNOW) {
+                if (world.getBiome(pos).value().getPrecipitation(pos) == Biome.Precipitation.SNOW) {
                     int skyLight = world.getLightLevel(LightType.SKY, pos);
 
                     if (skyLight > SKYLIGHT_CUTOFF_VALUE) {
@@ -77,7 +75,7 @@ public class SnowLayerLogic {
     public static void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (isSnowLayerBlock(state)) {
             if (LeaveslySettings.getSettings().getSnowLayer().isEnabled() && LeaveslySettings.getSettings().getBlock(state.getBlock()).getSnowLayer().isEnabled()) {
-                if (world.getBiome(pos).value().getPrecipitation(pos, world.getSeaLevel()) == Biome.Precipitation.SNOW) {
+                if (world.getBiome(pos).value().getPrecipitation(pos) == Biome.Precipitation.SNOW) {
                     int skyLight = world.getLightLevel(LightType.SKY, pos);
 
                     if (skyLight > SKYLIGHT_CUTOFF_VALUE) {
@@ -120,12 +118,12 @@ public class SnowLayerLogic {
     }
 
     public static void setDefaultState(Block block, StateManager<Block, BlockState> stateManager) {
-        if (Blocks.isSupportedVanillaBlock(Blocks.tempMixinBlockId))
+        if (Blocks.isSupportedVanillaBlockClassName(block.getClass().getName()))
             stateManager.getDefaultState().with(SNOW_LAYER, 0);
     }
 
     public static void appendProperties(Block block, StateManager.Builder<Block, BlockState> builder) {
-        if (Blocks.isSupportedVanillaBlock(Blocks.tempMixinBlockId))
+        if (Blocks.isSupportedVanillaBlockClassName(block.getClass().getName()))
             builder.add(SNOW_LAYER);
     }
 

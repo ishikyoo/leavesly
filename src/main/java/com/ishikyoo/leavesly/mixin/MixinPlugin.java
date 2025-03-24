@@ -1,18 +1,16 @@
 package com.ishikyoo.leavesly.mixin;
 
+import com.ishikyoo.leavesly.Leavesly;
 import com.ishikyoo.leavesly.support.Version;
 import org.objectweb.asm.tree.ClassNode;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public final class MixinPlugin implements IMixinConfigPlugin {
-    private static final Logger LOGGER = LoggerFactory.getLogger("Leavesly/Mixin");
+    private static final Logger LOG = Leavesly.LOGGER;
 
     private static final String MINECRAFT_ID = "minecraft";
     private static final String MINECRAFT_ALL_ID = "common";
@@ -20,7 +18,7 @@ public final class MixinPlugin implements IMixinConfigPlugin {
     private static final String MINECRAFT_20_ID = "twenty";
     private static final String MINECRAFT_19_ID = "nineteen";
 
-    private static final int MINECRAFT_ALL_VALUE = 255;
+    private static final int MINECRAFT_ALL_VALUE = 4095;
 
     private static final int MIXIN_MOD_SPLIT_INDEX = 5;
     private static final int MIXIN_MINOR_SPLIT_INDEX = 6;
@@ -41,8 +39,7 @@ public final class MixinPlugin implements IMixinConfigPlugin {
         String mixinModId = getMixinModId(mixinClassName);
         if (mixinModId.equals(MINECRAFT_ID)) {
             Version mixinVersion = getMinecraftMixinVersion(mixinClassName);
-            Version minecraftVersion = Version.of(MINECRAFT_ID);
-            return isMinecraftVersionMixin(mixinVersion, minecraftVersion);
+            return isMinecraftVersionMixin(mixinVersion, Version.game());
         }
         return false;
     }
@@ -88,7 +85,7 @@ public final class MixinPlugin implements IMixinConfigPlugin {
         String mixinMinorId = mixinClassNameSplit[MIXIN_MINOR_SPLIT_INDEX];
         String mixinPatchId = mixinClassNameSplit[MIXIN_PATCH_SPLIT_INDEX];
         if (mixinMinorId.equals(MINECRAFT_ALL_ID))
-            minor = 255;
+            minor = Version.MINOR_PATCH_MAX_VALUE;
         else if (mixinMinorId.equals(MINECRAFT_21_ID))
             minor = 21;
         else if (mixinMinorId.equals(MINECRAFT_20_ID))
@@ -96,7 +93,7 @@ public final class MixinPlugin implements IMixinConfigPlugin {
         else if (mixinMinorId.equals(MINECRAFT_19_ID))
             minor = 19;
         if (mixinPatchId.equals(MINECRAFT_ALL_ID))
-            patch = 255;
+            patch = Version.MINOR_PATCH_MAX_VALUE;
         else if (mixinPatchId.equals("zero"))
             patch = 0;
         else if (mixinPatchId.equals("one"))

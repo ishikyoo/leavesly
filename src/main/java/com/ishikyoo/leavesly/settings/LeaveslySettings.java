@@ -3,12 +3,11 @@ package com.ishikyoo.leavesly.settings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import com.ishikyoo.leavesly.Leavesly;
 import com.ishikyoo.leavesly.support.Version;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -18,9 +17,10 @@ import java.nio.file.Path;
 import java.util.HashMap;
 
 public class LeaveslySettings {
-    private static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
+    private static final Logger LOG = Leavesly.LOGGER;
 
-    private static final Path FILE_PATH = Path.of(String.valueOf(FabricLoader.getInstance().getConfigDir()), "leavesly.json");
+    private static final String FILE_NAME = "leavesly.json";
+    private static final Path FILE_PATH = Path.of(String.valueOf(FabricLoader.getInstance().getConfigDir()), FILE_NAME);
 
     private static final int VERSION = 1;
 
@@ -45,6 +45,7 @@ public class LeaveslySettings {
     }
 
     public static void preInitialize() {
+        LOG.info("Initializing settings...");
         initializeGson();
         initializeDefaultSettings();
         if (doesFileExists()) {
@@ -57,16 +58,19 @@ public class LeaveslySettings {
                 SnowLayerData.of(true, 0.5, 0, 1),
                 new HashMap<>());
         registerBlockSettings();
+        LOG.info("Initialized default settings.");
     }
 
     public static void setDefault() {
         settings = LeaveslySettingsData.of(defaultSettings);
+        LOG.info("Current settings set to default.");
     }
 
     private static LeaveslySettingsData getConfigFromFile() {
         try {
             BufferedReader reader = new BufferedReader(Files.newBufferedReader(LeaveslySettings.FILE_PATH, StandardCharsets.UTF_8));
             JsonReader jsonReader = new JsonReader(reader);
+            LOG.info("Current settings loaded from {}.", FILE_NAME);
             return getGson().fromJson(jsonReader, LeaveslySettingsData.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -85,25 +89,23 @@ public class LeaveslySettings {
     }
 
     private static void registerBlockSettings() {
-        Version mineVer = Version.of("minecraft");
-
         register(Identifier.of("minecraft", "birch_leaves"), BlockData.of(
                 Tint.of(-8345771 & 0x00FFFFFF, 0.72549019607),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
         register(Identifier.of("minecraft", "mangrove_leaves"), BlockData.of(
                 Tint.of(-7158200 & 0x00FFFFFF, 0.70980392156),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
         register(Identifier.of("minecraft", "spruce_leaves"), BlockData.of(
                 Tint.of(-10380959 & 0x00FFFFFF, 0.60392156862),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
         register(Identifier.of("minecraft", "azalea_leaves"), BlockData.of(
                 Tint.of(0xC4FF4F, 0.5725490196),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
-        if (mineVer.newerThan(Version.of(1, 19, 4))) {
+        if (Version.game().newerEqualThan(Version.CHERRY_LEAVES_BLOCK)) {
             register(Identifier.of("minecraft", "cherry_leaves"), BlockData.of(
                     Tint.of(0xDEFF4C, 0.6),
                     SnowLayerData.of(true, 1, 0, 1)
@@ -111,9 +113,9 @@ public class LeaveslySettings {
         }
         register(Identifier.of("minecraft", "flowering_azalea_leaves"), BlockData.of(
                 Tint.of(0xC4FF4F, 0.5725490196),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
-        if (mineVer.newerThan(Version.of(1, 21, 1))) {
+        if (Version.game().newerEqualThan(Version.PALE_OAK_LEAVES_BLOCK)) {
             register(Identifier.of("minecraft", "pale_oak_leaves"), BlockData.of(
                     Tint.of(0xA0A69C),
                     SnowLayerData.of(true, 1, 0, 1)
@@ -121,41 +123,41 @@ public class LeaveslySettings {
         }
         register(Identifier.of("minecraft", "dark_oak_leaves"), BlockData.of(
                 Tint.of(ColorType.FOLIAGE, 0.72549019607),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
         register(Identifier.of("minecraft", "jungle_leaves"), BlockData.of(
                 Tint.of(ColorType.FOLIAGE, 0.85490196078),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
         register(Identifier.of("minecraft", "oak_leaves"), BlockData.of(
                 Tint.of(ColorType.FOLIAGE, 0.73725490196),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
         register(Identifier.of("minecraft", "acacia_leaves"), BlockData.of(
                 Tint.of(ColorType.FOLIAGE, 0.70980392156),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
 
         register(Identifier.of("minecraft", "vine"), BlockData.of(
                 Tint.of(ColorType.FOLIAGE, 0.66666666666),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
 
         register(Identifier.of("minecraft", "short_grass"), BlockData.of(
                 Tint.of(ColorType.GRASS, 0.72156862745),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
         register(Identifier.of("minecraft", "tall_grass"), BlockData.of(
                 Tint.of(ColorType.GRASS, 0.67450980392),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
         register(Identifier.of("minecraft", "fern"), BlockData.of(
                 Tint.of(ColorType.GRASS, 0.64705882352),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
         register(Identifier.of("minecraft", "large_fern"), BlockData.of(
                 Tint.of(ColorType.GRASS, 0.67450980392),
-                SnowLayerData.of(true, 1, 0,1)
+                SnowLayerData.of(true, 1, 0, 1)
         ));
     }
 
@@ -164,6 +166,7 @@ public class LeaveslySettings {
             BufferedWriter writer = new BufferedWriter(Files.newBufferedWriter(FILE_PATH, StandardCharsets.UTF_8));
             writer.write(getGson().toJson(settings));
             writer.flush();
+            LOG.info("Current settings saved to {}.", FILE_NAME);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -178,7 +181,7 @@ public class LeaveslySettings {
         if (block == null) {
             defaultSettings.putBlock(id, blockData);
         } else {
-            LOGGER.warn("Trying to register an already registered block settings (Id: {}).", id);
+            LOG.warn("Trying to register an already registered block settings (Id: {}).", id);
         }
     }
 }

@@ -2,12 +2,11 @@ package com.ishikyoo.leavesly.settings;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.ishikyoo.leavesly.Leavesly;
 import com.ishikyoo.leavesly.block.Blocks;
 import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
@@ -16,7 +15,7 @@ public class LeaveslySettingsData {
 
     }
 
-    public static final Logger LOGGER = LoggerFactory.getLogger("Leavesly");
+    public static final Logger LOG = Leavesly.LOGGER;
     private static final Gson GSON = LeaveslySettings.getGson();
 
     private int version = 1;
