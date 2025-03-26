@@ -53,17 +53,26 @@ public class LeaveslySettings {
         }
     }
 
+    public static void register(Identifier id, BlockData blockData) {
+        BlockData block = defaultSettings.getBlock(id);
+        if (block == null) {
+            defaultSettings.putBlock(id, blockData);
+        } else {
+            LOG.warn("Trying to register an already registered block settings (Id: {}).", id);
+        }
+    }
+
+    public static void setDefault() {
+        settings = LeaveslySettingsData.of(defaultSettings);
+        LOG.info("Current settings set to default.");
+    }
+
     private static void initializeDefaultSettings() {
         defaultSettings = LeaveslySettingsData.of(VERSION,
                 SnowLayerData.of(true, 0.5, 0, 1),
                 new HashMap<>());
         registerBlockSettings();
         LOG.info("Initialized default settings.");
-    }
-
-    public static void setDefault() {
-        settings = LeaveslySettingsData.of(defaultSettings);
-        LOG.info("Current settings set to default.");
     }
 
     private static LeaveslySettingsData getConfigFromFile() {
@@ -137,12 +146,10 @@ public class LeaveslySettings {
                 Tint.of(ColorType.FOLIAGE, 0.70980392156),
                 SnowLayerData.of(true, 1, 0, 1)
         ));
-
         register(Identifier.of("minecraft", "vine"), BlockData.of(
                 Tint.of(ColorType.FOLIAGE, 0.66666666666),
                 SnowLayerData.of(true, 1, 0, 1)
         ));
-
         register(Identifier.of("minecraft", "short_grass"), BlockData.of(
                 Tint.of(ColorType.GRASS, 0.72156862745),
                 SnowLayerData.of(true, 1, 0, 1)
@@ -174,14 +181,5 @@ public class LeaveslySettings {
 
     private static boolean doesFileExists() {
         return Files.isRegularFile(FILE_PATH);
-    }
-
-    public static void register(Identifier id, BlockData blockData) {
-        BlockData block = defaultSettings.getBlock(id);
-        if (block == null) {
-            defaultSettings.putBlock(id, blockData);
-        } else {
-            LOG.warn("Trying to register an already registered block settings (Id: {}).", id);
-        }
     }
 }

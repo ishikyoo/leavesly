@@ -3,9 +3,7 @@ package com.ishikyoo.leavesly.support;
 import com.ishikyoo.leavesly.Leavesly;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.api.metadata.ModMetadata;
 import org.slf4j.Logger;
-
 import java.util.Optional;
 
 public class Version {
@@ -14,15 +12,18 @@ public class Version {
     }
 
     private static final Logger LOG = Leavesly.LOGGER;
+    private static final int DEFAULT_INDEX = 0;
 
     public static final int MIN_VALUE = 0;
     public static final int MAJOR_MAX_VALUE = 255;
     public static final int MINOR_PATCH_MAX_VALUE = 4095;
 
-    public static final Version CHERRY_LEAVES_BLOCK = Version.of(1, 20, 0);
+    public static final Version CHERRY_LEAVES_BLOCK = Version.of(1, 19, 4);
     public static final Version PALE_OAK_LEAVES_BLOCK = Version.of(1, 21, 2);
     public static final Version SHORT_GRASS_BLOCK = Version.of(1, 20, 3);
     public static final Version PARTICLE_LEAVES_CLASS = Version.of(1, 21, 4);
+
+    public static final Version CLUTTER_MOD_PATCH = Version.of(0, 6, 0);
 
     private static Version gameVer;
     private static Version modVer;
@@ -91,21 +92,26 @@ public class Version {
         return value >= version.value;
     }
 
-    public static Version of(String modid) {
-        Optional<ModContainer> modContainerI = FabricLoader.getInstance().getModContainer(modid);
+    public static Version of(String mod) {
+        return of(mod, DEFAULT_INDEX);
+    }
+
+    public static Version of(String mod, int index) {
+        Optional<ModContainer> modContainerI = FabricLoader.getInstance().getModContainer(mod);
         if (modContainerI.isPresent()) {
-            ModContainer modContainer = modContainerI.get();
-            ModMetadata modMetadata = modContainer.getMetadata();
-            String version = modMetadata.getVersion().getFriendlyString();
-            String[] versionSplit = version.split("\\.");
-            int major = Integer.parseInt(versionSplit[0]);
-            int minor = Integer.parseInt(versionSplit[1]);
-            int patch = versionSplit.length <= 2 ? 0 : Integer.parseInt(versionSplit[2]);
-            return new Version(getValue(major, minor, patch));
+            return Version.of(modContainerI.get(), index);
         } else {
-            LOG.error("Couldn't get the version of (modid: {}).", modid);
+            LOG.error("Couldn't get the version of (mod: {}).", mod);
         }
         return null;
+    }
+
+    public static Version of(ModContainer container) {
+        return getVersionFromFormat(container.getMetadata().getVersion().getFriendlyString(), DEFAULT_INDEX);
+    }
+
+    public static Version of(ModContainer container, int index) {
+        return getVersionFromFormat(container.getMetadata().getVersion().getFriendlyString(), index);
     }
 
     public static Version of(int major, int minor, int patch) {
@@ -116,6 +122,18 @@ public class Version {
 
     public static Version of(int value) {
         return new Version(value);
+    }
+
+    private static Version getVersionFromFormat(String format, int index) {
+        String[] versions = format.split("[-+]");
+        if (index < versions.length) {
+            String[] version = versions[index].split("\\.");
+            int major = version.length == 0 ? 0 : Integer.parseInt(version[0]);
+            int minor = version.length <= 1 ? 0 : Integer.parseInt(version[1]);
+            int patch = version.length <= 2 ? 0 : Integer.parseInt(version[2]);
+            return new Version(getValue(major, minor, patch));
+        }
+        return null;
     }
 
     private static int getValue(int major, int minor, int patch) {

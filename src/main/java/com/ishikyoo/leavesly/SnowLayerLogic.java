@@ -118,13 +118,11 @@ public class SnowLayerLogic {
     }
 
     public static void setDefaultState(Block block, StateManager<Block, BlockState> stateManager) {
-        if (Blocks.isSupportedVanillaBlockClassName(block.getClass().getName()))
-            stateManager.getDefaultState().with(SNOW_LAYER, 0);
+        stateManager.getDefaultState().with(SNOW_LAYER, 0);
     }
 
     public static void appendProperties(Block block, StateManager.Builder<Block, BlockState> builder) {
-        if (Blocks.isSupportedVanillaBlockClassName(block.getClass().getName()))
-            builder.add(SNOW_LAYER);
+        builder.add(SNOW_LAYER);
     }
 
     private static double getNeighboursInfluence(ServerWorld world, BlockPos pos, int range) {
@@ -200,7 +198,7 @@ public class SnowLayerLogic {
     }
 
     private static boolean isSnowLayerBlock(BlockState state) {
-        return Blocks.isRegisteredBlock(state.getBlock());
+        return Blocks.isSupportedBlock(state.getBlock());
     }
 
     private  static void setBlockState(ServerWorld world, BlockPos pos, BlockState state, int value) {

@@ -14,7 +14,7 @@ public class BlockData  {
     private Tint tint;
     private SnowLayerData snowLayer;
 
-    
+
     public Tint getTint() {
         return tint;
     }

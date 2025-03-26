@@ -3,8 +3,6 @@ package com.ishikyoo.leavesly;
 import com.ishikyoo.leavesly.block.Blocks;
 import com.ishikyoo.leavesly.settings.*;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -31,46 +29,55 @@ public class LeaveslyColorProvider {
     private static final HashMap<Identifier, Tint> modPatchBlockTintHashMap = new HashMap<>();
 
     public static void initialize() {
-        HashMap<Identifier, BlockData> blocks = LeaveslySettings.getSettings().getBlocks();
-        for(Map.Entry<Identifier, BlockData> entry : blocks.entrySet()) {
-            Identifier id = entry.getKey();
-            register(id);
-        }
+        registerBlockAndItemsColors();
         applyModPatch();
     }
 
     public static void register(Identifier id) {
-        if (Blocks.isRegisteredBlockId(id)) {
+        if (Blocks.isSupportedBlockId(id)) {
             BlockData blockData = LeaveslySettings.getSettings().getBlock(id);
             Tint tint = blockData.getTint();
             if (!registeredBlockIds.contains(id)) {
                 Block block = Blocks.getBlock(id);
                 ColorProviderRegistry.BLOCK.register(LeaveslyColorProvider::getColorProviderBlockColor, block);
                 ColorProviderRegistry.ITEM.register(LeaveslyColorProvider::getColorProviderItemColor, block);
-                LOG.info("Registered block and item color (Id: {}, Tint: {}).", id, tint.getColorType().toString().toLowerCase());
+                LOG.info("Registered block and item colors (Id: {}, Tint: {}).", id, tint.getColorType().toString().toLowerCase());
                 registeredBlockIds.add(id);
             } else {
-                LOG.error("Trying to register a already registered block color (Id: {}, Tint: {}).", id, tint.getColorType().toString().toLowerCase());
+                LOG.error("Trying to register a already registered block and item colors (Id: {}, Tint: {}).", id, tint.getColorType().toString().toLowerCase());
             }
         } else {
-            LOG.error("Trying to register a block and item color for a unregistered block (Id: {}).", id);
+            LOG.error("Trying to register a block and item colors for a unregistered block (Id: {}).", id);
+        }
+    }
+
+    private static void registerBlockAndItemsColors() {
+        HashMap<Identifier, BlockData> blocks = LeaveslySettings.getSettings().getBlocks();
+        for(Map.Entry<Identifier, BlockData> entry : blocks.entrySet()) {
+            Identifier id = entry.getKey();
+            register(id);
         }
     }
 
     private static void applyModPatch() {
-        LOG.info("Applying mod patch...");
+        LOG.info("Registering mod patches...");
         //Clutter
-        Optional<ModContainer> cutterMc = FabricLoader.getInstance().getModContainer("clutter");
-        if (cutterMc.isPresent()) {
-            modPatchBlockTintHashMap.put(Identifier.of("clutter:redwood_leaves"), Tint.FOLIAGE);
-            modPatchBlockTintHashMap.put(Identifier.of("clutter:giant_fern"), Tint.GRASS);
-            LOG.info("Applied mod patch for (modid: clutter).");
+        String clutterId = "clutter";
+        registerModBlockPatch(Identifier.of(clutterId, "redwood_leaves"), Tint.FOLIAGE);
+        registerModBlockPatch(Identifier.of(clutterId, "giant_fern"), Tint.GRASS);
+    }
+
+    private static void registerModBlockPatch(Identifier blockId, Tint tint) {
+        LeaveslySettingsData settings = LeaveslySettings.getSettings();
+        if (!settings.isRegisteredBlockId(blockId) && Blocks.isRegisteredBlockId(blockId)) {
+            modPatchBlockTintHashMap.put(blockId, tint);
+            LOG.info("Registered block and item colors mod patch (Id: {}, Tint: {}).", blockId, tint.getColorType().toString().toLowerCase());
         }
     }
 
     private static int getColorProviderBlockColor(BlockState state, BlockRenderView world, BlockPos position, int index) {
         Block block = state.getBlock();
-        if (Blocks.isRegisteredBlock(block)) {
+        if (Blocks.isSupportedBlock(block)) {
             int snowLayer = state.get(SNOW_LAYER);
             int blockColor = getBlockColor(state, world, position);
             LeaveslySettingsData settings = LeaveslySettings.getSettings();
@@ -88,18 +95,18 @@ public class LeaveslyColorProvider {
         } else {
             if (isModPatchBlock(block))
                 return getModPatchBlockColor(block, world, position);
-            return 0;
+            return Tint.NEON_PINK.getColorValue();
         }
     }
 
     private static int getColorProviderItemColor(ItemStack stack, int index) {
         Block block = Block.getBlockFromItem(stack.getItem());
-        if (Blocks.isRegisteredBlock(block)) {
+        if (Blocks.isSupportedBlock(block)) {
             return getItemColor(block);
         } else {
             if (isModPatchBlock(block))
                 return getModPatchItemColor(block);
-            return 0;
+            return Tint.NEON_PINK.getColorValue();
         }
     }
 
@@ -108,24 +115,24 @@ public class LeaveslyColorProvider {
         BlockData blockData = LeaveslySettings.getSettings().getBlock(Blocks.getBlockId(block));
         Tint tint = blockData.getTint();
         switch (tint.getColorType()) {
-            case ColorType.STATIC:
+            case STATIC:
                 return tint.getColorValue();
-            case ColorType.FOLIAGE:
+            case FOLIAGE:
                 switch (tint.getColorBlend()) {
-                    case ColorBlend.MULTIPLY:
+                    case MULTIPLY:
                         return getMultiplyColor(BiomeColors.getFoliageColor(world, position), tint.getColorValue());
-                    case ColorBlend.SCREEN:
+                    case SCREEN:
                         return getScreenColor(BiomeColors.getFoliageColor(world, position), tint.getColorValue());
                 }
-            case ColorType.GRASS:
+            case GRASS:
                 switch (tint.getColorBlend()) {
-                    case ColorBlend.MULTIPLY:
+                    case MULTIPLY:
                         return getMultiplyColor(BiomeColors.getGrassColor(world, position), tint.getColorValue());
-                    case ColorBlend.SCREEN:
+                    case SCREEN:
                         return getScreenColor(BiomeColors.getGrassColor(world, position), tint.getColorValue());
                 }
             default:
-                return 0;
+                return Tint.NEON_PINK.getColorValue();
         }
     }
 
@@ -150,7 +157,7 @@ public class LeaveslyColorProvider {
                         return getScreenColor(Tint.DEFAULT_GRASS.getColorValue(), tint.getColorValue());
                 }
             default:
-                return 0;
+                return Tint.NEON_PINK.getColorValue();
         }
     }
 
@@ -174,7 +181,7 @@ public class LeaveslyColorProvider {
                         return getScreenColor(BiomeColors.getGrassColor(world, position), tint.getColorValue());
                 }
             default:
-                return 0;
+                return Tint.NEON_PINK.getColorValue();
         }
     }
 
