@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"package": "com.ishikyoo.leavesly.mixin.entry",
-	"compatibilityLevel": "JAVA_21",
+	"compatibilityLevel": "JAVA_17",
 	"plugin": "com.ishikyoo.leavesly.mixin.MixinPlugin",
 	"mixins": [
 		"minecraft.common.block.LeavesBlockMixin",

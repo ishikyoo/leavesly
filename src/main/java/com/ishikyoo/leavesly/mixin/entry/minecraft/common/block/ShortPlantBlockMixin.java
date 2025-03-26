@@ -1,6 +1,7 @@
 package com.ishikyoo.leavesly.mixin.entry.minecraft.common.block;
 
 import com.ishikyoo.leavesly.SnowLayerLogic;
+import com.ishikyoo.leavesly.block.Blocks;
 import net.minecraft.block.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
@@ -19,12 +20,14 @@ public abstract class ShortPlantBlockMixin extends PlantBlock {
 
     @Inject(at = @At("TAIL"), method = "<init>")
     private void initInject(AbstractBlock.Settings settings, CallbackInfo ci) {
-        SnowLayerLogic.setDefaultState(this, this.stateManager);
+        if (Blocks.isSupportedBlockClassName(this.getClass().getName()))
+            SnowLayerLogic.setDefaultState(this, this.stateManager);
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        SnowLayerLogic.appendProperties(this, builder);
+        if (Blocks.isSupportedBlockClassName(this.getClass().getName()))
+            SnowLayerLogic.appendProperties(this, builder);
     }
 
     @Override

@@ -12,6 +12,7 @@ public class Tint {
     public static final Tint DEFAULT_GRASS = Tint.of(0x7cbd6b);
     public static final Tint FOLIAGE = Tint.of(ColorType.FOLIAGE);
     public static final Tint GRASS = Tint.of(ColorType.GRASS);
+    public static final Tint NEON_PINK = Tint.of(0xff10f0);
 
     private ColorType type;
     private ColorBlend blend;

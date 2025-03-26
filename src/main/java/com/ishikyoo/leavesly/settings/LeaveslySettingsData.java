@@ -67,6 +67,14 @@ public class LeaveslySettingsData {
         blockDataHashMap.replace(id, data);
     }
 
+    public boolean isRegisteredBlockId(Identifier id) {
+        return blockDataHashMap.containsKey(id);
+    }
+
+    public boolean isRegisteredBlock(Block block) {
+        return isRegisteredBlockId(Blocks.getBlockId(block));
+    }
+
     public static class Serializer implements JsonDeserializer<LeaveslySettingsData>, JsonSerializer<LeaveslySettingsData> {
         private static final String JSON_OBJECT_NAME_VERSION = "version";
         private static final String JSON_OBJECT_NAME_SNOW_LAYER = "snow_layer";
