@@ -7,7 +7,7 @@ In Bedrock Edition, there is an exclusive feature that turns some of the leaves 
 - Jungle leaves now have cocoa pods ([Podded Jungle Leaves](https://github.com/ishikyoo/podded-jungle-leaves)).
 - Fully customisable, snow coverage, leaves colors and more can be tweaked.
 
-This branch support `Minecraft` versions `1.21.2` and `1.21.3`.
+This branch supports `Minecraft` version `1.21.4`.
 
 ## Installation
 You can install `Leavesly` by downloading it from the following:
@@ -16,7 +16,7 @@ You can install `Leavesly` by downloading it from the following:
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/leavesly?style=for-the-badge&logo=modrinth&color=00AD5B)](https://modrinth.com/mod/leavesly)
 [![CurseForge Downloads](https://img.shields.io/curseforge/dt/1109585?style=for-the-badge&logo=curseforge&color=F16436&)](https://www.curseforge.com/minecraft/mc-mods/leavesly)
 
-Simply place the mod file `leavesly-1.3.1+1.21.3.jar` in your `.minecraft\mods` folder, and load Minecraft using [Fabric](https://fabricmc.net/use/installer) or [Quilt](https://quiltmc.org/en/install).
+Simply place the mod file `leavesly-1.3.1+1.21.4.jar` in your `.minecraft\mods` folder, and load Minecraft using [Fabric](https://fabricmc.net/use/installer) or [Quilt](https://quiltmc.org/en/install).
 You will need Fabric API or Quilted Fabric API.
 
 You can also install it using [Prism Launcher](https://prismlauncher.org), or any other mod manager you like.

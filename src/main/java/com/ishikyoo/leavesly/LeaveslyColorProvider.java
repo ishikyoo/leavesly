@@ -40,7 +40,7 @@ public class LeaveslyColorProvider {
             if (!registeredBlockIds.contains(id)) {
                 Block block = Blocks.getBlock(id);
                 ColorProviderRegistry.BLOCK.register(LeaveslyColorProvider::getColorProviderBlockColor, block);
-                ColorProviderRegistry.ITEM.register(LeaveslyColorProvider::getColorProviderItemColor, block);
+                //ColorProviderRegistry.ITEM.register(LeaveslyColorProvider::getColorProviderItemColor, block);
                 LOG.info("Registered block and item colors (Id: {}, Tint: {}).", id, tint.getColorType().toString().toLowerCase());
                 registeredBlockIds.add(id);
             } else {
@@ -71,7 +71,7 @@ public class LeaveslyColorProvider {
         LeaveslySettingsData settings = LeaveslySettings.getSettings();
         if (!settings.isRegisteredBlockId(blockId) && Blocks.isRegisteredBlockId(blockId)) {
             modPatchBlockTintHashMap.put(blockId, tint);
-            LOG.info("Registered block and item colors mod patch (Id: {}, Tint: {}).", blockId, tint.getColorType().toString().toLowerCase());
+            LOG.info("Registered block mod patch (Id: {}, Tint: {}).", blockId, tint.getColorType().toString().toLowerCase());
         }
     }
 
