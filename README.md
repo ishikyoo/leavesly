@@ -7,7 +7,7 @@ In Bedrock Edition, there is an exclusive feature that turns some of the leaves 
 - Jungle leaves now have cocoa pods ([Podded Jungle Leaves](https://github.com/ishikyoo/podded-jungle-leaves)).
 - Fully customisable, snow coverage, leaves colors and more can be tweaked.
 
-This branch support `Minecraft` versions from `1.21` and `1.21.1`.
+This branch support `Minecraft` versions `1.21.2` and `1.21.3`.
 
 ## Installation
 You can install `Leavesly` by downloading it from the following:

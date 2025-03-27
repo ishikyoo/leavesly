@@ -84,7 +84,7 @@ public class LeaveslyColorProvider {
             BlockData blockData = settings.getBlock(state.getBlock());
             ClientWorld clientWorld = MinecraftClient.getInstance().world;
             if (settings.getSnowLayer().isEnabled() && blockData.getSnowLayer().isEnabled() &&
-                    clientWorld.getBiome(position).value().getPrecipitation(position) == Biome.Precipitation.SNOW) {
+                    clientWorld.getBiome(position).value().getPrecipitation(position, clientWorld.getSeaLevel()) == Biome.Precipitation.SNOW) {
                 double snowLayerN = (double) snowLayer / SNOW_LAYER.getValues().size();
                 double coverageMax = settings.getSnowLayer().getMaxCoverage() * blockData.getSnowLayer().getMaxCoverage();
                 double coverageMin = settings.getSnowLayer().getMinCoverage() + (blockData.getSnowLayer().getMinCoverage() * (coverageMax - blockData.getSnowLayer().getMinCoverage()));

@@ -1,0 +1,6 @@
+{
+  "parent": "leavesly:block/block",
+  "textures": {
+    "block": "leavesly:block/pale_oak_leaves"
+  }
+}

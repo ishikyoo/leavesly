@@ -30,7 +30,7 @@ public class SnowLayerLogic {
         if (isSnowLayerBlock(state)) {
             if (LeaveslySettings.getSettings().getSnowLayer().isEnabled() && LeaveslySettings.getSettings().getBlock(state.getBlock()).getSnowLayer().isEnabled()) {
 
-                if (world.getBiome(pos).value().getPrecipitation(pos) == Biome.Precipitation.SNOW) {
+                if (world.getBiome(pos).value().getPrecipitation(pos, world.getSeaLevel()) == Biome.Precipitation.SNOW) {
                     int skyLight = world.getLightLevel(LightType.SKY, pos);
 
                     if (skyLight > SKYLIGHT_CUTOFF_VALUE) {
@@ -75,7 +75,7 @@ public class SnowLayerLogic {
     public static void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (isSnowLayerBlock(state)) {
             if (LeaveslySettings.getSettings().getSnowLayer().isEnabled() && LeaveslySettings.getSettings().getBlock(state.getBlock()).getSnowLayer().isEnabled()) {
-                if (world.getBiome(pos).value().getPrecipitation(pos) == Biome.Precipitation.SNOW) {
+                if (world.getBiome(pos).value().getPrecipitation(pos, world.getSeaLevel()) == Biome.Precipitation.SNOW) {
                     int skyLight = world.getLightLevel(LightType.SKY, pos);
 
                     if (skyLight > SKYLIGHT_CUTOFF_VALUE) {
