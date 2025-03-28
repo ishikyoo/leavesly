@@ -4,10 +4,7 @@ import com.ishikyoo.leavesly.Leavesly;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
-import java.util.Map;
 
 public class Deobfuscator {
     private static final Logger LOG = Leavesly.LOGGER;
@@ -23,8 +20,12 @@ public class Deobfuscator {
         obfuscatedClassNameHashMap.put("net.minecraft.class_2320", "net.minecraft.block.TallPlantBlock");
         if (Version.game().olderThan(Version.PARTICLE_LEAVES_CLASS))
             obfuscatedClassNameHashMap.put("net.minecraft.class_8167", "net.minecraft.block.CherryLeavesBlock");
-        else
+        else if (Version.game().newerEqualThan(Version.PARTICLE_LEAVES_CLASS) && Version.game().olderThan(Version.TINTED_UNTINTED_PARTICLE_LEAVES_CLASS))
             obfuscatedClassNameHashMap.put("net.minecraft.class_8167", "net.minecraft.block.ParticleLeavesBlock");
+        else {
+            obfuscatedClassNameHashMap.put("net.minecraft.class_10716", "net.minecraft.block.TintedParticleLeavesBlock");
+            obfuscatedClassNameHashMap.put("net.minecraft.class_10717", "net.minecraft.block.UntintedParticleLeavesBlock");
+        }
     }
 
     public static String getClassName(Block block) {

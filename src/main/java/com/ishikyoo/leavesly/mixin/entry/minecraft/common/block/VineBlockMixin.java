@@ -23,13 +23,13 @@ public abstract class VineBlockMixin extends Block {
 
     @Inject(at = @At("TAIL"), method = "<init>")
     private void initInject(AbstractBlock.Settings settings, CallbackInfo ci) {
-        if (Blocks.isSupportedBlockClassName(this.getClass().getName()))
+        if (Blocks.isSupportedBlockClassName(this))
             SnowLayerLogic.setDefaultState(this, this.stateManager);
     }
 
     @Inject(at = @At("TAIL"), method = "appendProperties")
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder, CallbackInfo ci) {
-        if (Blocks.isSupportedBlockClassName(this.getClass().getName()))
+        if (Blocks.isSupportedBlockClassName(this))
             SnowLayerLogic.appendProperties(this, builder);
     }
 

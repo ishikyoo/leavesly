@@ -89,7 +89,7 @@ public class LeaveslySettings {
     private static void initializeGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
-        builder.registerTypeAdapter(Identifier.class, new Identifier.Serializer());
+        builder.registerTypeAdapter(Identifier.class, new IdentifierSerializer());
         builder.registerTypeAdapter(Tint.class, new Tint.Serializer());
         builder.registerTypeAdapter(SnowLayerData.class, new SnowLayerData.Serializer());
         builder.registerTypeAdapter(BlockData.class, new BlockData.Serializer());

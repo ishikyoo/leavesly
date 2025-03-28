@@ -20,14 +20,14 @@ public abstract class LeavesBlockMixin extends Block {
     }
 
     @Inject(at = @At("TAIL"), method = "<init>")
-    private void initInject(AbstractBlock.Settings settings, CallbackInfo ci) {
-        if (Blocks.isSupportedBlockClassName(this.getClass().getName()))
+    private void initInject(float leafParticleChance, AbstractBlock.Settings settings, CallbackInfo ci) {
+        if (Blocks.isSupportedBlockClassName(this))
             SnowLayerLogic.setDefaultState(this, this.stateManager);
     }
 
     @Inject(at = @At("TAIL"), method = "appendProperties")
     protected void injectAppendProperties(StateManager.Builder<Block, BlockState> builder, CallbackInfo ci) {
-        if (Blocks.isSupportedBlockClassName(this.getClass().getName()))
+        if (Blocks.isSupportedBlockClassName(this))
             SnowLayerLogic.appendProperties(this, builder);
     }
 

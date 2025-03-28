@@ -20,13 +20,13 @@ public abstract class ShortPlantBlockMixin extends PlantBlock {
 
     @Inject(at = @At("TAIL"), method = "<init>")
     private void initInject(AbstractBlock.Settings settings, CallbackInfo ci) {
-        if (Blocks.isSupportedBlockClassName(this.getClass().getName()))
+        if (Blocks.isSupportedBlockClassName(this))
             SnowLayerLogic.setDefaultState(this, this.stateManager);
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        if (Blocks.isSupportedBlockClassName(this.getClass().getName()))
+        if (Blocks.isSupportedBlockClassName(this))
             SnowLayerLogic.appendProperties(this, builder);
     }
 

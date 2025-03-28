@@ -20,7 +20,7 @@ public abstract class TallPlantBlockMixin extends PlantBlock {
 
     @Inject(at = @At("TAIL"), method = "<init>")
     private void initInject(AbstractBlock.Settings settings, CallbackInfo ci) {
-        if (Blocks.isSupportedBlockClassName(this.getClass().getName()))
+        if (Blocks.isSupportedBlockClassName(this))
             SnowLayerLogic.setDefaultState(this, this.stateManager);
     }
 
@@ -36,7 +36,7 @@ public abstract class TallPlantBlockMixin extends PlantBlock {
 
     @Inject(at = @At("TAIL"), method = "appendProperties")
     protected void injectAppendProperties(StateManager.Builder<Block, BlockState> builder, CallbackInfo ci) {
-        if (Blocks.isSupportedBlockClassName(this.getClass().getName()))
+        if (Blocks.isSupportedBlockClassName(this))
             SnowLayerLogic.appendProperties(this, builder);
     }
 }

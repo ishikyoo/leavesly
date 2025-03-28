@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
-
 import java.util.*;
 
 public class Blocks {
@@ -109,10 +108,14 @@ public class Blocks {
         blockClassNameHashSet.add("net.minecraft.block.ShortPlantBlock");
         blockClassNameHashSet.add("net.minecraft.block.TallPlantBlock");
         blockClassNameHashSet.add("net.minecraft.block.MangroveLeavesBlock");
-        blockClassNameHashSet.add(
-                Version.game().olderThan(Version.PARTICLE_LEAVES_CLASS) ?
-                        "net.minecraft.block.CherryLeavesBlock" :
-                        "net.minecraft.block.ParticleLeavesBlock");
+        if (Version.game().olderThan(Version.PARTICLE_LEAVES_CLASS))
+            blockClassNameHashSet.add("net.minecraft.block.CherryLeavesBlock");
+        else if (Version.game().newerEqualThan(Version.PARTICLE_LEAVES_CLASS) && Version.game().olderThan(Version.TINTED_UNTINTED_PARTICLE_LEAVES_CLASS))
+            blockClassNameHashSet.add("net.minecraft.block.ParticleLeavesBlock");
+        else {
+            blockClassNameHashSet.add("net.minecraft.block.TintedParticleLeavesBlock");
+            blockClassNameHashSet.add("net.minecraft.block.UntintedParticleLeavesBlock");
+        }
     }
 
     private static Identifier getCompBlockId(Identifier id) {

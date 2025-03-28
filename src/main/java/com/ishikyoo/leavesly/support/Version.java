@@ -22,6 +22,7 @@ public class Version {
     public static final Version PALE_OAK_LEAVES_BLOCK = Version.of(1, 21, 2);
     public static final Version SHORT_GRASS_BLOCK = Version.of(1, 20, 3);
     public static final Version PARTICLE_LEAVES_CLASS = Version.of(1, 21, 4);
+    public static final Version TINTED_UNTINTED_PARTICLE_LEAVES_CLASS = Version.of(1, 21, 5);
 
     public static final Version CLUTTER_MOD_PATCH = Version.of(0, 6, 0);
 
