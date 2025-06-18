@@ -2,9 +2,8 @@ package com.ishikyoo.leavesly.block;
 
 import com.ishikyoo.leavesly.Leavesly;
 import com.ishikyoo.leavesly.settings.BlockData;
-import com.ishikyoo.leavesly.settings.LeaveslySettings;
-import com.ishikyoo.leavesly.support.Deobfuscator;
-import com.ishikyoo.leavesly.support.Version;
+import com.ishikyoo.leavesly.util.Deobfuscator;
+import com.ishikyoo.leavesly.util.Version;
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
@@ -62,11 +61,12 @@ public class Blocks {
     }
 
     public static boolean isSupportedBlockId(Identifier id) {
-        return blockHashMap.containsKey(getCompBlockId(id));
+        Identifier compBlockId = getCompBlockId(id);
+        return blockHashMap.containsKey(compBlockId) | Leavesly.getSettings().getCurrent().containsBlock(compBlockId);
     }
 
     public static boolean isSupportedBlock(Block block) {
-        return blockIdHashMap.containsKey(block);
+        return isSupportedBlockId(getBlockId(block));
     }
 
     public static boolean isSupportedBlockClassName(Block block) {
@@ -94,7 +94,7 @@ public class Blocks {
 
     private static void registerBlocks() {
         LOG.info("Registering blocks...");
-        HashMap<Identifier, BlockData> blocks = LeaveslySettings.getSettings().getBlocks();
+        HashMap<Identifier, BlockData> blocks = Leavesly.getSettings().getCurrent().getBlocks();
         for(Map.Entry<Identifier, BlockData> entry : blocks.entrySet()) {
             Identifier id = entry.getKey();
             Block block = Registries.BLOCK.get(getOrigBlockId(id));

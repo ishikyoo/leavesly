@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.ishikyoo.leavesly.Leavesly;
 import com.ishikyoo.leavesly.block.Blocks;
+import com.ishikyoo.leavesly.util.Version;
 import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -16,15 +17,17 @@ public class LeaveslySettingsData {
     }
 
     public static final Logger LOG = Leavesly.LOGGER;
-    private static final Gson GSON = LeaveslySettings.getGson();
 
-    private int version = 1;
+    private Version version;
+    private boolean debug;
+    private boolean log;
     private SnowLayerData snowLayerData;
     private HashMap<Identifier, BlockData> blockDataHashMap;
 
-    public static LeaveslySettingsData of(int version, SnowLayerData snowLayerData, HashMap<Identifier, BlockData> blockData) {
+    public static LeaveslySettingsData of(Version version, boolean debug, boolean log, SnowLayerData snowLayerData, HashMap<Identifier, BlockData> blockData) {
         LeaveslySettingsData data = new LeaveslySettingsData();
         data.setVersion(version);
+        data.setDebug(debug);
         data.setSnowLayer(snowLayerData);
         data.blockDataHashMap = new HashMap<>(blockData);
         return data;
@@ -38,9 +41,9 @@ public class LeaveslySettingsData {
         return data;
     }
 
-    public int getVersion() {
-        return version;
-    }
+    public Version getVersion() { return version; }
+    public boolean isDebug() { return debug; }
+    public boolean shouldLog() { return log; }
     public SnowLayerData getSnowLayer() {
         return snowLayerData;
     }
@@ -54,9 +57,9 @@ public class LeaveslySettingsData {
         return blockDataHashMap;
     }
 
-    private void setVersion(int version) {
-        this.version = version;
-    }
+    public void setVersion(Version version) { this.version = version; }
+    public void setDebug(boolean value) { debug = value; }
+    public void setShouldLog(boolean value) { log = value; }
     public void setSnowLayer(SnowLayerData data) {
         snowLayerData = data;
     }
@@ -67,36 +70,46 @@ public class LeaveslySettingsData {
         blockDataHashMap.replace(id, data);
     }
 
-    public boolean isRegisteredBlockId(Identifier id) {
+    public boolean containsBlock(Identifier id) {
         return blockDataHashMap.containsKey(id);
     }
 
-    public boolean isRegisteredBlock(Block block) {
-        return isRegisteredBlockId(Blocks.getBlockId(block));
+    public boolean containsBlock(Block block) {
+        return containsBlock(Blocks.getBlockId(block));
     }
 
     public static class Serializer implements JsonDeserializer<LeaveslySettingsData>, JsonSerializer<LeaveslySettingsData> {
         private static final String JSON_OBJECT_NAME_VERSION = "version";
+        private static final String JSON_OBJECT_NAME_DEBUG = "debug";
+        private static final String JSON_OBJECT_NAME_LOG = "log";
         private static final String JSON_OBJECT_NAME_SNOW_LAYER = "snow_layer";
         private static final String JSON_OBJECT_NAME_BLOCK = "block";
 
         public LeaveslySettingsData deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             LeaveslySettingsData data = new LeaveslySettingsData();
             JsonObject jsonObject = jsonElement.getAsJsonObject();
-            data.setVersion(jsonObject.get(JSON_OBJECT_NAME_VERSION).getAsInt());
-            data.setSnowLayer(GSON.fromJson(jsonObject.get(JSON_OBJECT_NAME_SNOW_LAYER), SnowLayerData.class));
+            data.setVersion(Version.of(jsonObject.get(JSON_OBJECT_NAME_VERSION).getAsString()));
+            data.setDebug(jsonObject.get(JSON_OBJECT_NAME_DEBUG).getAsBoolean());
+            data.setShouldLog(jsonObject.get(JSON_OBJECT_NAME_LOG).getAsBoolean());
+            data.setSnowLayer(getGson().fromJson(jsonObject.get(JSON_OBJECT_NAME_SNOW_LAYER), SnowLayerData.class));
             JsonElement jsonElementBlock = jsonObject.get(JSON_OBJECT_NAME_BLOCK);
             Type mapType = new TypeToken<HashMap<Identifier, BlockData>>(){}.getType();
-            data.blockDataHashMap = GSON.fromJson(jsonElementBlock, mapType);
+            data.blockDataHashMap = getGson().fromJson(jsonElementBlock, mapType);
             return data;
         }
 
         public JsonElement serialize(LeaveslySettingsData data, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject jsonObject = new JsonObject();
-            jsonObject.add(JSON_OBJECT_NAME_VERSION, new JsonPrimitive(data.getVersion()));
-            jsonObject.add(JSON_OBJECT_NAME_SNOW_LAYER, LeaveslySettings.getGson().toJsonTree(data.getSnowLayer()));
-            jsonObject.add(JSON_OBJECT_NAME_BLOCK, LeaveslySettings.getGson().toJsonTree(data.blockDataHashMap));
+            jsonObject.add(JSON_OBJECT_NAME_VERSION, new JsonPrimitive(data.getVersion().toString()));
+            jsonObject.add(JSON_OBJECT_NAME_DEBUG, new JsonPrimitive(data.isDebug()));
+            jsonObject.add(JSON_OBJECT_NAME_LOG, new JsonPrimitive(data.shouldLog()));
+            jsonObject.add(JSON_OBJECT_NAME_SNOW_LAYER, Leavesly.getSettings().getGson().toJsonTree(data.getSnowLayer()));
+            jsonObject.add(JSON_OBJECT_NAME_BLOCK, Leavesly.getSettings().getGson().toJsonTree(data.blockDataHashMap));
             return jsonObject;
         }
+    }
+
+    private static Gson getGson() {
+        return Leavesly.getSettings().getGson();
     }
 }

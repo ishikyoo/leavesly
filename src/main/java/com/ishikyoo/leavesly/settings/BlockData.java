@@ -1,6 +1,7 @@
 package com.ishikyoo.leavesly.settings;
 
 import com.google.gson.*;
+import com.ishikyoo.leavesly.Leavesly;
 
 import java.lang.reflect.Type;
 
@@ -9,27 +10,25 @@ public class BlockData  {
 
     }
 
-    private static final Gson GSON = LeaveslySettings.getGson();
-
     private Tint tint;
-    private SnowLayerData snowLayer;
+    private BlockSnowLayerData snowLayer;
 
 
     public Tint getTint() {
         return tint;
     }
-    public SnowLayerData getSnowLayer() {
+    public BlockSnowLayerData getSnowLayer() {
         return snowLayer;
     }
 
     public void setTint(Tint tint) {
         this.tint = tint;
     }
-    public void setSnowLayer(SnowLayerData snowLayer) {
+    public void setSnowLayer(BlockSnowLayerData snowLayer) {
         this.snowLayer = snowLayer;
     }
 
-    public static BlockData of(Tint tint, SnowLayerData snowLayer) {
+    public static BlockData of(Tint tint, BlockSnowLayerData snowLayer) {
         BlockData data = new BlockData();
         data.setTint(tint);
         data.setSnowLayer(snowLayer);
@@ -44,16 +43,20 @@ public class BlockData  {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             JsonElement jsonElementTint = jsonObject.get(JSON_OBJECT_NAME_TINT);
             JsonElement jsonElementSnowLayer = jsonObject.get(JSON_OBJECT_NAME_SNOW_LAYER);
-            Tint clientBlockData = GSON.fromJson(jsonElementTint, Tint.class);
-            SnowLayerData serverBlockData = GSON.fromJson(jsonElementSnowLayer, SnowLayerData.class);
+            Tint clientBlockData = getGson().fromJson(jsonElementTint, Tint.class);
+            BlockSnowLayerData serverBlockData = getGson().fromJson(jsonElementSnowLayer, BlockSnowLayerData.class);
             return BlockData.of(clientBlockData, serverBlockData);
         }
 
         public JsonElement serialize(BlockData blockData, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject jsonObject = new JsonObject();
-            jsonObject.add(JSON_OBJECT_NAME_TINT, GSON.toJsonTree(blockData.getTint()));
-            jsonObject.add(JSON_OBJECT_NAME_SNOW_LAYER, GSON.toJsonTree(blockData.getSnowLayer()));
+            jsonObject.add(JSON_OBJECT_NAME_TINT, getGson().toJsonTree(blockData.getTint()));
+            jsonObject.add(JSON_OBJECT_NAME_SNOW_LAYER, getGson().toJsonTree(blockData.getSnowLayer()));
             return jsonObject;
         }
+    }
+
+    private static Gson getGson() {
+        return Leavesly.getSettings().getGson();
     }
 }

@@ -1,15 +1,14 @@
 package com.ishikyoo.leavesly.mixin.entry.minecraft.common.block;
 
-import com.ishikyoo.leavesly.SnowLayerLogic;
+import com.ishikyoo.leavesly.Leavesly;
 import com.ishikyoo.leavesly.block.Blocks;
+import com.ishikyoo.iyoo.state.property.BitsmartRegistry;
+import com.ishikyoo.leavesly.snowlayer.SnowLayerBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.VineBlock;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,23 +22,20 @@ public abstract class VineBlockMixin extends Block {
 
     @Inject(at = @At("TAIL"), method = "<init>")
     private void initInject(AbstractBlock.Settings settings, CallbackInfo ci) {
-        if (Blocks.isSupportedBlockClassName(this))
-            SnowLayerLogic.setDefaultState(this, this.stateManager);
+        if (Blocks.isSupportedBlockId(Leavesly.currentBlockId)) {
+            if (Leavesly.isDebug())
+                Leavesly.LOGGER.info("[DEBUG] Setting {} LEAVESLY_SNOW_LAYER to {}", Leavesly.currentBlockId, 0);
+            setDefaultState(getDefaultState().with(BitsmartRegistry.get(SnowLayerBlock.PROPERTY_ID).property(), 0));
+        }
+        Leavesly.currentBlockId = null;
     }
 
     @Inject(at = @At("TAIL"), method = "appendProperties")
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder, CallbackInfo ci) {
-        if (Blocks.isSupportedBlockClassName(this))
-            SnowLayerLogic.appendProperties(this, builder);
-    }
-
-    @Override
-    protected boolean hasRandomTicks(BlockState state) {
-        return true;
-    }
-
-    @Inject(at = @At("HEAD"), method = "randomTick")
-    protected void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
-        SnowLayerLogic.randomTick(state, world, pos, random);
+        if (Blocks.isSupportedBlockId(Leavesly.currentBlockId)) {
+            if (Leavesly.isDebug())
+                Leavesly.LOGGER.info("[DEBUG] Appending LEAVESLY_SNOW_LAYER to {}", Leavesly.currentBlockId);
+            builder.add(BitsmartRegistry.get(SnowLayerBlock.PROPERTY_ID).property());
+        }
     }
 }

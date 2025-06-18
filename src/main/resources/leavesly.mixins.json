@@ -7,7 +7,12 @@
 		"minecraft.common.block.LeavesBlockMixin",
 		"minecraft.common.block.ShortPlantBlockMixin",
 		"minecraft.common.block.TallPlantBlockMixin",
-		"minecraft.common.block.VineBlockMixin"
+		"minecraft.common.block.VineBlockMixin",
+		"minecraft.common.WorldMixin",
+		"minecraft.common.ServerWorldMixin",
+		"minecraft.common.PlayerManagerMixin",
+		"minecraft.common.BlocksMixin",
+		"minecraft.common.DebugHudMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

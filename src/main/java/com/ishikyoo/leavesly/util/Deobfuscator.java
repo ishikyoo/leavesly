@@ -1,14 +1,13 @@
-package com.ishikyoo.leavesly.support;
+package com.ishikyoo.leavesly.util;
 
 import com.ishikyoo.leavesly.Leavesly;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import org.slf4j.Logger;
 import java.util.HashMap;
 
-public class Deobfuscator {
+public final class Deobfuscator {
     private static final Logger LOG = Leavesly.LOGGER;
-    private static final boolean DEV_ENV = FabricLoader.getInstance().isDevelopmentEnvironment();
+    private static final boolean DEV_ENV = Leavesly.DEV_ENV;
 
     private static final HashMap<String, String> obfuscatedClassNameHashMap = new HashMap<>();
 

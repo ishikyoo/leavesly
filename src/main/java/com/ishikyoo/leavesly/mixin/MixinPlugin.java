@@ -1,7 +1,7 @@
 package com.ishikyoo.leavesly.mixin;
 
 import com.ishikyoo.leavesly.Leavesly;
-import com.ishikyoo.leavesly.support.Version;
+import com.ishikyoo.leavesly.util.Version;
 import org.objectweb.asm.tree.ClassNode;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;

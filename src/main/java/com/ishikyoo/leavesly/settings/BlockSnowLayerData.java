@@ -4,24 +4,18 @@ import com.google.gson.*;
 
 import java.lang.reflect.Type;
 
-public class SnowLayerData {
-    private SnowLayerData() {
+public class BlockSnowLayerData {
+    private BlockSnowLayerData() {
 
     }
 
     private boolean isEnabled;
-    private int simulationSpeed;
-    private int simulationDistance;
     private double minCoverage;
     private double maxCoverage;
 
     public boolean isEnabled() {
         return isEnabled;
     }
-    public int getSimulationSpeed() {
-        return simulationSpeed;
-    }
-    public int getSimulationDistance() { return simulationDistance; }
     public double getMinCoverage() {
         return minCoverage;
     }
@@ -32,10 +26,6 @@ public class SnowLayerData {
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
     }
-    public void setSimulationSpeed(int speed) {
-        simulationSpeed = speed;
-    }
-    public void setSimulationDistance(int distance) { simulationDistance = distance; }
     public void setMinCoverage(double coverage) {
         this.minCoverage = coverage;
     }
@@ -43,38 +33,30 @@ public class SnowLayerData {
         this.maxCoverage = coverage;
     }
 
-    public static SnowLayerData of(boolean enabled, int simulationSpeed, int simulationDistance, double minCoverage, double maxCoverage) {
-        SnowLayerData data = new SnowLayerData();
+    public static BlockSnowLayerData of(boolean enabled, double minCoverage, double maxCoverage) {
+        BlockSnowLayerData data = new BlockSnowLayerData();
         data.setEnabled(enabled);
-        data.setSimulationSpeed(simulationSpeed);
-        data.setSimulationDistance(simulationDistance);
         data.setMinCoverage(minCoverage);
         data.setMaxCoverage(maxCoverage);
         return data;
     }
 
-    public static class Serializer implements JsonDeserializer<SnowLayerData>, JsonSerializer<SnowLayerData> {
+    public static class Serializer implements JsonDeserializer<BlockSnowLayerData>, JsonSerializer<BlockSnowLayerData> {
         private static final String JSON_OBJECT_NAME_SNOW_LAYER_ENABLED = "enabled";
-        private static final String JSON_OBJECT_NAME_SNOW_LAYER_SIMULATION_SPEED = "simulation_speed";
-        private static final String JSON_OBJECT_NAME_SNOW_LAYER_SIMULATION_DISTANCE = "simulation_distance";
         private static final String JSON_OBJECT_NAME_SNOW_LAYER_MIN_COVERAGE = "coverage_min";
         private static final String JSON_OBJECT_NAME_SNOW_LAYER_MAX_COVERAGE = "coverage_max";
 
-        public SnowLayerData deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+        public BlockSnowLayerData deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
-            return SnowLayerData.of(
+            return BlockSnowLayerData.of(
                     jsonObject.get(JSON_OBJECT_NAME_SNOW_LAYER_ENABLED).getAsBoolean(),
-                    jsonObject.get(JSON_OBJECT_NAME_SNOW_LAYER_SIMULATION_SPEED).getAsInt(),
-                    jsonObject.get(JSON_OBJECT_NAME_SNOW_LAYER_SIMULATION_DISTANCE).getAsInt(),
                     jsonObject.get(JSON_OBJECT_NAME_SNOW_LAYER_MIN_COVERAGE).getAsDouble(),
                     jsonObject.get(JSON_OBJECT_NAME_SNOW_LAYER_MAX_COVERAGE).getAsDouble());
         }
 
-        public JsonElement serialize(SnowLayerData data, Type type, JsonSerializationContext jsonSerializationContext) {
+        public JsonElement serialize(BlockSnowLayerData data, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject result = new JsonObject();
             result.add(JSON_OBJECT_NAME_SNOW_LAYER_ENABLED, new JsonPrimitive(data.isEnabled()));
-            result.add(JSON_OBJECT_NAME_SNOW_LAYER_SIMULATION_SPEED, new JsonPrimitive(data.getSimulationSpeed()));
-            result.add(JSON_OBJECT_NAME_SNOW_LAYER_SIMULATION_DISTANCE, new JsonPrimitive(data.getSimulationDistance()));
             result.add(JSON_OBJECT_NAME_SNOW_LAYER_MIN_COVERAGE, new JsonPrimitive(data.getMinCoverage()));
             result.add(JSON_OBJECT_NAME_SNOW_LAYER_MAX_COVERAGE, new JsonPrimitive(data.getMaxCoverage()));
             return result;
